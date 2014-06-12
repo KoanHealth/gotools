@@ -22,6 +22,14 @@ var _ = Describe("StringSlice", func() {
 		})
 	})
 
+	Describe("DeleteIf/Reject", func() {
+		It("Removes items matching filter", func() {
+			filter := func(s string) bool { return s == "a" || s == "1" }
+			Expect(slice.DeleteIf(filter)).To(Equal(StringSlice{"b", "c", "2", "3"}))
+			Expect(slice.Reject(filter)).To(Equal(StringSlice{"b", "c", "2", "3"}))
+		})
+	})
+
 	Describe("Any", func() {
 		It("returns true if any items match filter", func() {
 			filter := func(s string) bool { return s == "a" || s == "1" }
@@ -89,13 +97,6 @@ var _ = Describe("StringSlice", func() {
 			f := func(s string) { counter++ }
 			slice.Each(f)
 			Expect(counter).To(Equal(len(slice)))
-		})
-	})
-
-	Describe("DeleteIf", func() {
-		It("Removes items matching filter", func() {
-			filter := func(s string) bool { return s == "a" || s == "1" }
-			Expect(slice.DeleteIf(filter)).To(Equal(StringSlice{"b", "c", "2", "3"}))
 		})
 	})
 

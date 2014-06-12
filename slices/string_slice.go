@@ -1,9 +1,8 @@
 package slices
 
-import "strings"
+import . "github.com/koanhealth/gotools/strings"
 
 type StringSlice []string
-type StringPredicate func(s string) bool
 type StringFunc func(s string)
 
 // Returns subset of slice where filter is true
@@ -14,6 +13,16 @@ func (slice StringSlice) Select(filter StringPredicate) (result StringSlice) {
 		}
 	}
 	return
+}
+
+// Removes items matching predicate
+func (slice StringSlice) DeleteIf(filter StringPredicate) (result StringSlice) {
+	return slice.Select(Not(filter))
+}
+
+// Removes items matching predicate (alias for DeleteIf)
+func (slice StringSlice) Reject(filter StringPredicate) (result StringSlice) {
+	return slice.DeleteIf(filter)
 }
 
 // Return true if any filter passes
@@ -59,20 +68,9 @@ func (slice StringSlice) Each(f StringFunc) {
 	}
 }
 
-// Removes items matching predicate
-func (slice StringSlice) DeleteIf(filter StringPredicate) (result StringSlice) {
-	for _, s := range slice {
-		if !filter(s) {
-			result = append(result, s)
-		}
-	}
-	return
-}
-
 // Removes blank values
 func (slice StringSlice) Compact() StringSlice {
-	filter := func(s string) bool { return len(strings.TrimSpace(s)) > 0 }
-	return slice.Select(filter)
+	return slice.Reject(IsBlank)
 }
 
 // Returns first value
