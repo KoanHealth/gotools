@@ -37,8 +37,8 @@ var _ = Describe("String Predicates", func() {
 		Expect(False.Or(True)("")).To(BeTrue())
 	})
 
-	It("Or", func() {
-		Expect(Not(False)("")).To(BeTrue())
-		Expect(Not(True)("")).To(BeFalse())
+	It("Not", func() {
+		Expect(False.Not()("")).To(BeTrue())
+		Expect(True.Not()("")).To(BeFalse())
 	})
 })

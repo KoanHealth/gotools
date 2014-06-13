@@ -19,7 +19,7 @@ func (predicate StringPredicate) Or(other StringPredicate) StringPredicate {
 	}
 }
 
-func Not(predicate StringPredicate) StringPredicate {
+func (predicate StringPredicate) Not() StringPredicate {
 	return func(s string) bool {
 		return !predicate(s)
 	}
