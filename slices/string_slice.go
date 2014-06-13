@@ -17,7 +17,7 @@ func (slice StringSlice) Select(filter StringPredicate) (result StringSlice) {
 
 // Removes items matching predicate
 func (slice StringSlice) DeleteIf(filter StringPredicate) (result StringSlice) {
-	return slice.Select(Not(filter))
+	return slice.Select(filter.Not())
 }
 
 // Removes items matching predicate (alias for DeleteIf)
