@@ -1,7 +1,7 @@
 package strings_test
 
 import (
-	. "github.com/KoanHealth/gotools/strings"
+	. "github.com/koanhealth/gotools/strings"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

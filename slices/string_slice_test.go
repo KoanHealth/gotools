@@ -1,7 +1,7 @@
 package slices_test
 
 import (
-	. "github.com/KoanHealth/gotools/slices"
+	. "github.com/koanhealth/gotools/slices"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
