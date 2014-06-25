@@ -35,6 +35,14 @@ var _ = Describe("Conversion", func() {
 			}
 		})
 
+		It("Converts byte array correctly", func() {
+			val := []byte("this is a test")
+			expectedVal := "this is a test"
+			convertedVal := ToString(val)
+			fmt.Fprintf(GinkgoWriter, "\n%T Value:%v Converted: %vExpected:%v", val, val, convertedVal, expectedVal)
+			Expect(convertedVal).To(Equal(expectedVal))
+		})
+
 	})
 
 	Context("Boolean", func() {
@@ -68,6 +76,14 @@ var _ = Describe("Conversion", func() {
 			}
 		})
 
+		It("Converts byte array correctly", func() {
+			val := []byte("true")
+			expectedVal := true
+			convertedVal := ToBool(val)
+			fmt.Fprintf(GinkgoWriter, "\n%T Value:%v Converted: %vExpected:%v", val, val, convertedVal, expectedVal)
+			Expect(convertedVal).To(Equal(expectedVal))
+		})
+
 	})
 
 	Context("Float", func() {
@@ -95,6 +111,14 @@ var _ = Describe("Conversion", func() {
 				fmt.Fprintf(GinkgoWriter, "\n%T Value:%v Converted: %vExpected:%v", val, val, convertedVal, expectedVal)
 				Expect(convertedVal).To(Equal(expectedVal))
 			}
+		})
+
+		It("Converts byte array correctly", func() {
+			val := []byte("45.67")
+			expectedVal := float64(45.67)
+			convertedVal := ToFloat(val)
+			fmt.Fprintf(GinkgoWriter, "\n%T Value:%v Converted: %vExpected:%v", val, val, convertedVal, expectedVal)
+			Expect(convertedVal).To(Equal(expectedVal))
 		})
 
 	})
@@ -127,6 +151,14 @@ var _ = Describe("Conversion", func() {
 			}
 		})
 
+		It("Converts byte array correctly", func() {
+			val := []byte("45.67")
+			expectedVal := int64(45)
+			convertedVal := ToInt(val)
+			fmt.Fprintf(GinkgoWriter, "\n%T Value:%v Converted: %vExpected:%v", val, val, convertedVal, expectedVal)
+			Expect(convertedVal).To(Equal(expectedVal))
+		})
+
 	})
 
 	Context("Time", func() {
@@ -152,6 +184,14 @@ var _ = Describe("Conversion", func() {
 				fmt.Fprintf(GinkgoWriter, "\n%T Value:%v Converted: %vExpected:%v", val, val, convertedVal, expectedVal)
 				Expect(convertedVal).To(Equal(expectedVal))
 			}
+		})
+
+		It("Converts byte array correctly", func() {
+			val := []byte("2012-06-15")
+			expectedVal := time.Date(2012, time.June, 15, 0, 0, 0, 0, time.UTC)
+			convertedVal := ToTime(val)
+			fmt.Fprintf(GinkgoWriter, "\n%T Value:%v Converted: %vExpected:%v", val, val, convertedVal, expectedVal)
+			Expect(convertedVal).To(Equal(expectedVal))
 		})
 
 	})

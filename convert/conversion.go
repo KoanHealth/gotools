@@ -14,7 +14,13 @@ func ToString(object interface{}) string {
 	if object == nil {
 		return ""
 	}
-	return fmt.Sprintf("%v", object)
+
+	switch val := object.(type) {
+	case []byte:
+		return ToString(string(val))
+	default:
+		return fmt.Sprintf("%v", val)
+	}
 }
 
 func ToBool(object interface{}) bool {
@@ -25,6 +31,9 @@ func ToBool(object interface{}) bool {
 	case string:
 		boolVal, _ := strconv.ParseBool(val)
 		return boolVal
+
+	case []byte:
+		return ToBool(string(val))
 
 	case uint, uint8, uint16, uint32, uint64, int, int8, int16, int32, int64:
 		return val != 0
@@ -43,6 +52,9 @@ func ToFloat(object interface{}) float64 {
 	case string:
 		floatVal, _ := strconv.ParseFloat(val, 64)
 		return floatVal
+
+	case []byte:
+		return ToFloat(string(val))
 
 	case float64:
 		return val
@@ -98,6 +110,9 @@ func ToInt(object interface{}) int64 {
 	case string:
 		floatVal, _ := strconv.ParseFloat(val, 64)
 		return int64(floatVal)
+
+	case []byte:
+		return ToInt(string(val))
 
 	case float64:
 		return int64(val)
@@ -162,6 +177,9 @@ func ToTime(object interface{}) time.Time {
 		}
 		// Nothing worked, return Zero time
 		return time.Time{}
+
+	case []byte:
+		return ToTime(string(val))
 
 	default:
 		return time.Time{}
