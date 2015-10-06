@@ -93,6 +93,11 @@ var _ = Describe("DateRange", func() {
 			Expect(i.IsEmpty()).To(BeFalse())
 			Expect(i.Equals(NewDateRange(r2.Min, r1.Max))).To(BeTrue())
 		})
+		It("Intersection with empty range yields empty range", func() {
+			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
+			i := r1.Intersection(NewEmptyDateRange())
+			Expect(i.IsEmpty()).To(BeTrue())
+		})
 		It("Intersection returns empty range when they don't intersect", func() {
 			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
 			r2 := NewDateRange(Date(2012, 2, 15), Date(2012, 2, 16))
@@ -108,6 +113,12 @@ var _ = Describe("DateRange", func() {
 			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
 			r2 := NewDateRange(Date(2012, 3, 15), Date(2012, 4, 15))
 			Expect(r1.Union(r2).Equals(NewDateRange(r1.Min, r2.Max))).To(BeTrue())
+		})
+		It("Union with empty is self", func() {
+			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
+			Expect(r1.Union(NewEmptyDateRange()).Equals(r1)).To(BeTrue())
+			Expect(NewEmptyDateRange().Union(r1).Equals(r1)).To(BeTrue())
+			Expect(NewEmptyDateRange().Union(NewEmptyDateRange()).IsEmpty()).To(BeTrue())
 		})
 	})
 	Context("relations", func() {

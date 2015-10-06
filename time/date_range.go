@@ -65,8 +65,16 @@ func (r DateRange) Intersection(dr DateRange) DateRange {
 }
 
 func (r DateRange) Union(dr DateRange) DateRange {
-	if r.IsEmpty() || dr.IsEmpty() {
+	if r.IsEmpty() && dr.IsEmpty() {
 		return NewEmptyDateRange()
+	}
+
+	if r.IsEmpty() {
+		return dr
+	}
+
+	if dr.IsEmpty() {
+		return r
 	}
 
 	min := r.Min
