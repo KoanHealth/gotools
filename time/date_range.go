@@ -31,6 +31,10 @@ func (r DateRange) IsEmpty() bool {
 	return r.Min.IsZero() && r.Max.IsZero()
 }
 
+func (r DateRange) DaysBetween() int {
+	return int(r.Max.Sub(r.Min).Hours() / 24.0)
+}
+
 func (r DateRange) Equals(other DateRange) bool {
 	return r.Min.Equal(other.Min) && r.Max.Equal(other.Max)
 }

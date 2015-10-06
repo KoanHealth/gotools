@@ -78,6 +78,27 @@ var _ = Describe("DateRange", func() {
 		})
 	})
 
+	Context("Duration (Days Between)", func() {
+		It("Evaluates duration correctly", func() {
+			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 1, 15))
+			Expect(r1.DaysBetween()).To(Equal(14))
+		})
+
+		It("Evaluates duration correctly", func() {
+			r1 := NewDateRange(Date(2012, 1, 31), Date(2012, 2, 17))
+			Expect(r1.DaysBetween()).To(Equal(17))
+		})
+
+		It("Zero length range has 0 duration", func() {
+			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 1, 1))
+			Expect(r1.DaysBetween()).To(Equal(0))
+		})
+
+		It("Empty range has zero duration", func() {
+			Expect(NewEmptyDateRange().DaysBetween()).To(Equal(0))
+		})
+	})
+
 	Context("Operations", func() {
 		It("Equals evaluates correctly", func() {
 			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
