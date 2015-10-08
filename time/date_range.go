@@ -1,6 +1,9 @@
 package time
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type DateRange struct {
 	Min time.Time
@@ -24,6 +27,14 @@ func NewDateRange(start, end time.Time) DateRange {
 		return DateRange{Min: start, Max: end}
 	} else {
 		return DateRange{Min: end, Max: start}
+	}
+}
+
+func (r DateRange) String() string {
+	if r.IsEmpty() {
+		return "[ Empty }"
+	} else {
+		return fmt.Sprintf("[%s - %s]", r.Min.Format(DateFormat), r.Max.Format(DateFormat))
 	}
 }
 
