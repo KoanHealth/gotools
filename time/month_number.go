@@ -87,11 +87,15 @@ func (m MonthNumber) Month() time.Month {
 }
 
 func (m MonthNumber) ToDate(dayOfMonth int) time.Time {
-	return time.Date(m.Year(), m.Month(), dayOfMonth, 0, 0, 0, 0, time.UTC)
+	return Date(m.Year(), m.Month(), dayOfMonth)
 }
 
 func (m MonthNumber) FirstDay() time.Time {
 	return m.ToDate(1)
+}
+
+func (m MonthNumber) MidMonth() time.Time {
+	return m.ToDate(15)
 }
 
 func (m MonthNumber) FirstDayOfFollowingMonth() time.Time {
