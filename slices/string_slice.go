@@ -1,9 +1,33 @@
 package slices
 
-import . "github.com/koanhealth/gotools/strings"
+import (
+	"fmt"
+
+	. "github.com/koanhealth/gotools/strings"
+)
 
 type StringSlice []string
 type StringFunc func(s string)
+
+func ToStringSlice(src interface{}) StringSlice {
+	if src != nil {
+		switch typedSource := src.(type) {
+		case string:
+			return []string{typedSource}
+		case []string:
+			return typedSource
+		case []interface{}:
+			result := make([]string, 0, len(typedSource))
+			for _, val := range typedSource {
+				result = append(result, ToStringSlice(val)...)
+			}
+			return result
+		default:
+			return []string{fmt.Sprintf("%v", src)}
+		}
+	}
+	return nil
+}
 
 // Returns subset of slice where filter is true
 func (slice StringSlice) Select(filter StringPredicate) (result StringSlice) {
