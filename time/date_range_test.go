@@ -52,6 +52,62 @@ var _ = Describe("DateRange", func() {
 			Expect(r1.Includes(Date(2012, 1, 6))).To(BeFalse())
 		})
 	})
+	Context("Completely Includes", func() {
+		It("returns true if range is inside another", func() {
+			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
+			r2 := NewDateRange(Date(2012, 1, 15), Date(2012, 1, 15))
+			Expect(r1.CompletelyIncludes(r2)).To(BeTrue())
+		})
+
+		It("returns true if same range ", func() {
+			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
+			r2 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
+			Expect(r1.CompletelyIncludes(r2)).To(BeTrue())
+		})
+
+		It("returns true if same start ", func() {
+			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
+			r2 := NewDateRange(Date(2012, 1, 1), Date(2012, 1, 15))
+			Expect(r1.CompletelyIncludes(r2)).To(BeTrue())
+		})
+
+		It("returns true if same end ", func() {
+			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
+			r2 := NewDateRange(Date(2012, 1, 15), Date(2012, 2, 1))
+			Expect(r1.CompletelyIncludes(r2)).To(BeTrue())
+		})
+
+		It("returns true if other is empty", func() {
+			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
+			r2 := NewEmptyDateRange()
+			Expect(r1.CompletelyIncludes(r2)).To(BeTrue())
+		})
+
+		It("returns false if this is empty", func() {
+			r1 := NewEmptyDateRange()
+			r2 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
+			Expect(r1.CompletelyIncludes(r2)).To(BeFalse())
+		})
+
+		It("returns false if range overlaps min", func() {
+			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
+			r2 := NewDateRange(Date(2011, 12, 15), Date(2012, 1, 15))
+			Expect(r1.CompletelyIncludes(r2)).To(BeFalse())
+		})
+
+		It("returns false if range overlaps max", func() {
+			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
+			r2 := NewDateRange(Date(2012, 1, 15), Date(2012, 2, 15))
+			Expect(r1.CompletelyIncludes(r2)).To(BeFalse())
+		})
+
+		It("returns false if range doesnt overlap", func() {
+			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))
+			r2 := NewDateRange(Date(2012, 3, 1), Date(2012, 3, 15))
+			Expect(r1.CompletelyIncludes(r2)).To(BeFalse())
+		})
+	})
+
 	Context("Overlap", func() {
 		It("returns true if range is inside another", func() {
 			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 2, 1))

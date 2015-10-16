@@ -54,6 +54,16 @@ func (r DateRange) Includes(moment time.Time) bool {
 	return (r.Min.Equal(moment) || r.Min.Before(moment)) && (r.Max.Equal(moment) || r.Max.After(moment))
 }
 
+func (r DateRange) CompletelyIncludes(dr DateRange) bool {
+	if r.IsEmpty() {
+		return false
+	} else if dr.IsEmpty() {
+		return true
+	} else {
+		return (r.Min.Equal(dr.Min) || r.Min.Before(dr.Min)) && (r.Max.Equal(dr.Max) || r.Max.After(dr.Max))
+	}
+}
+
 func (r DateRange) Overlaps(dr DateRange) bool {
 	return r.Includes(dr.Min) || r.Includes(dr.Max) || dr.Includes(r.Min) || dr.Includes(r.Max)
 }
