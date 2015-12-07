@@ -113,6 +113,28 @@ D172 D197 D198 D225..D230 D232..D235 D237..D247 D249..D253 D259 D650..D653 D656 
 		})
 	})
 
+	Context("Complex Code Lists", func() {
+		It("Works", func() {
+			c := ParseCodeList("A0101..D0106").WithStrictMatching()
+			Expect(c.Includes("A0101")).To(BeTrue())
+			Expect(c.Includes("B0101")).To(BeTrue())
+			Expect(c.Includes("C0101")).To(BeTrue())
+			Expect(c.Includes("D0101")).To(BeTrue())
+			Expect(c.Includes("A0102")).To(BeTrue())
+			Expect(c.Includes("B0102")).To(BeTrue())
+			Expect(c.Includes("C0102")).To(BeTrue())
+			Expect(c.Includes("D0102")).To(BeTrue())
+			Expect(c.Includes("A0103")).To(BeTrue())
+			Expect(c.Includes("B0103")).To(BeTrue())
+			Expect(c.Includes("C0103")).To(BeTrue())
+			Expect(c.Includes("D0103")).To(BeTrue())
+			Expect(c.Includes("A0104")).To(BeTrue())
+			Expect(c.Includes("B0104")).To(BeTrue())
+			Expect(c.Includes("C0104")).To(BeTrue())
+			Expect(c.Includes("D0104")).To(BeTrue())
+		})
+	})
+
 	Context("Other Matching", func() {
 		It("IncludesAny returns true if any code exists", func() {
 			c := ParseCodeList("code1, code2, code3")
@@ -128,6 +150,46 @@ D172 D197 D198 D225..D230 D232..D235 D237..D247 D249..D253 D259 D650..D653 D656 
 			c := ParseCodeList("V90..V99")
 			Expect(c.Includes("V90.00")).To(BeTrue())
 			Expect(c.Includes("V90.1")).To(BeTrue())
+		})
+	})
+
+	Context("Compact Codes", func() {
+		It("Performs a basic compaction", func() {
+			result, err := CompactCodes(2, "A101", "F203")
+			Expect(err).To(BeNil())
+			Expect(result).To(Equal("A101,F203"))
+		})
+		It("Sorts Codes", func() {
+			result, err := CompactCodes(2, "F203", "A101")
+			Expect(err).To(BeNil())
+			Expect(result).To(Equal("A101,F203"))
+		})
+		It("Rejects code range expressions", func() {
+			result, err := CompactCodes(2, "F203", "A101..A201")
+			Expect(err).ToNot(BeNil())
+			Expect(result).To(Equal(""))
+		})
+		It("Compacts Code Ranges", func() {
+			result, err := CompactCodes(2, "F203", "A101", "A102", "A103", "A104")
+			Expect(err).To(BeNil())
+			Expect(result).To(Equal("A101..A104,F203"))
+		})
+		It("Compacts Code Ranges, honors minimum range length", func() {
+			result, err := CompactCodes(4, "F203", "A101", "A102", "A103", "A104")
+			Expect(err).To(BeNil())
+			Expect(result).To(Equal("A101..A104,F203"))
+
+			result, err = CompactCodes(5, "F203", "A101", "A102", "A103", "A104")
+			Expect(err).To(BeNil())
+			Expect(result).To(Equal("A101,A102,A103,A104,F203"))
+		})
+	})
+	Context("Increment string", func() {
+		It("Increments", func() {
+			Expect(IncrementString("A1")).To(Equal("A2"))
+			Expect(IncrementString("1A")).To(Equal("1B"))
+			Expect(IncrementString("Z")).To(Equal(""))
+			Expect(IncrementString("A9")).To(Equal("B0"))
 		})
 	})
 })

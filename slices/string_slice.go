@@ -2,6 +2,7 @@ package slices
 
 import (
 	"fmt"
+	"sort"
 
 	. "github.com/koanhealth/gotools/strings"
 )
@@ -27,6 +28,23 @@ func ToStringSlice(src interface{}) StringSlice {
 		}
 	}
 	return nil
+}
+
+func (p StringSlice) Len() int           { return len(p) }
+func (p StringSlice) Less(i, j int) bool { return p[i] < p[j] }
+func (p StringSlice) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
+
+// Sort is a convenience method.
+func (p StringSlice) Sort() { sort.Sort(p) }
+
+func (p StringSlice) Reverse() StringSlice {
+	output := make(StringSlice, len(p))
+	targetIndex := len(output) - 1
+	for _, str := range p {
+		output[targetIndex] = str
+		targetIndex -= 1
+	}
+	return output
 }
 
 // Returns subset of slice where filter is true
