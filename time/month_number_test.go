@@ -84,6 +84,18 @@ var _ = Describe("Month Number", func() {
 		})
 	})
 
+	Context("FirstMonthOfYear/LastMonthOfYear", func() {
+
+		It("FirstMonthOfYear returns January of the current year", func() {
+			Expect(MonthNumber(201211).FirstMonthOfYear()).To(Equal(MonthNumber(201201)))
+		})
+
+		It("LastMonthOfYear returns December of the current year", func() {
+			Expect(MonthNumber(201211).LastMonthOfYear()).To(Equal(MonthNumber(201212)))
+		})
+
+	})
+
 	Context("Ago/FromNow", func() {
 		It("MonthsFromNow works", func() {
 			start := MonthNumber(201406)

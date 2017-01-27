@@ -78,6 +78,14 @@ func (m MonthNumber) PreviousMonth() MonthNumber {
 	return m.MonthsAgo(1)
 }
 
+func (m MonthNumber) FirstMonthOfYear() MonthNumber {
+	return NewMonthNumber(m.Year(), time.January)
+}
+
+func (m MonthNumber) LastMonthOfYear() MonthNumber {
+	return NewMonthNumber(m.Year(), time.December)
+}
+
 func (m MonthNumber) Year() int {
 	return int(m) / 100
 }
