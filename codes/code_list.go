@@ -42,7 +42,7 @@ func CompactCodes(minimumRangeLength int, codeStrings ...string) (result string,
 		rangeEndIndex := index + 1
 		rangeExpression := ""
 		for ; rangeEndIndex < len(input); rangeEndIndex += 1 {
-			if exp, detected := detectRange(input[index : rangeEndIndex+1]); detected {
+			if exp, detected := detectRange(input[index: rangeEndIndex+1]); detected {
 				rangeExpression = exp
 			} else {
 				break
@@ -153,13 +153,23 @@ func TryParseCodeList(codeList string) (*CodeList, error) {
 		for _, code := range strings.Split(code1, " ") {
 			rangeBounds := strings.Split(code, "..")
 			if len(rangeBounds) == 1 {
-				individualCodes[strings.TrimSpace(code)] = true
-			} else if len(rangeBounds) == 2 {
-				newRange, err := newCodeRange(strings.TrimSpace(rangeBounds[0]), strings.TrimSpace(rangeBounds[1]))
-				if err != nil {
-					return nil, err
+				strippedCode := strings.TrimSpace(code)
+				if len(strippedCode) > 0 {
+					individualCodes[strippedCode] = true
 				}
-				codeRanges = append(codeRanges, newRange)
+			} else if len(rangeBounds) == 2 {
+				strippedCode1 := strings.TrimSpace(rangeBounds[0])
+				strippedCode2 := strings.TrimSpace(rangeBounds[1])
+
+				if len(strippedCode1) > 0 && len(strippedCode2) > 0 {
+					newRange, err := newCodeRange(strippedCode1, strippedCode2)
+					if err != nil {
+						return nil, err
+					}
+					codeRanges = append(codeRanges, newRange)
+				} else {
+					return nil, ErrMalformedCodeList
+				}
 			} else {
 				return nil, ErrMalformedCodeList
 			}

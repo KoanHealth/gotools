@@ -27,6 +27,12 @@ var _ = Describe("CodeList", func() {
 				ParseCodeList("")
 			}).To(Panic())
 		})
+
+		It("should not create empty codes", func() {
+			list := ParseCodeList("123, 456")
+			Expect(list.Includes("")).To(BeFalse())
+		})
+
 		It("malformed range produces error", func() {
 			Expect(func() {
 				ParseCodeList("V90..V98..V99")
