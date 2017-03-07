@@ -198,4 +198,29 @@ D172 D197 D198 D225..D230 D232..D235 D237..D247 D249..D253 D259 D650..D653 D656 
 			Expect(IncrementString("A9")).To(Equal("B0"))
 		})
 	})
+
+	Context("Supports String()", func() {
+		It("Dumps keys", func() {
+			c := ParseCodeList("A001, A002,A003")
+			Expect(c.String()).To(Equal("A001,A002,A003"))
+		})
+
+		It("Dumps keys with ranges", func() {
+			c := ParseCodeList("A001, A002,A003..A010,  A100  ")
+			Expect(c.String()).To(Equal("A001,A002,A003..A010,A100"))
+		})
+
+		It("Dumps keys with multiline list", func() {
+			c := ParseCodeList(`A001
+			A100..B200
+A002 A003
+A004`)
+			Expect(c.String()).To(Equal("A001,A002,A003,A004,A100..B200"))
+		})
+
+		It("Dumps keys with single code", func() {
+			c := ParseCodeList("A1")
+			Expect(c.String()).To(Equal("A1"))
+		})
+	})
 })

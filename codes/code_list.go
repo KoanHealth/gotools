@@ -6,6 +6,8 @@ import (
 	"strings"
 
 	"github.com/koanhealth/gotools/slices"
+	"sort"
+	"regexp"
 )
 
 var (
@@ -22,13 +24,16 @@ type CodeList struct {
 }
 
 func (cc *CodeList) String() string {
-	keys := make([]string, 0, len(cc.codes))
-
-	i := 0
-	for k := range cc.codes {
-		keys[i] = k
-		i++
+	keys := make([]string, 0, len(cc.codes)+len(cc.codeRanges))
+	for key := range cc.codes {
+		keys = append(keys, key)
 	}
+
+	for _, cr := range cc.codeRanges {
+		keys = append(keys, cr.begin+".."+cr.end)
+	}
+
+	sort.Strings(keys)
 
 	return strings.Join(keys, ",")
 }
@@ -161,30 +166,31 @@ func TryParseCodeList(codeList string) (*CodeList, error) {
 
 	individualCodes := make(map[string]bool)
 	codeRanges := make([]codeRange, 0, 5)
-	for _, code1 := range strings.Split(codeList, ",") {
-		for _, code := range strings.Split(code1, " ") {
-			rangeBounds := strings.Split(code, "..")
-			if len(rangeBounds) == 1 {
-				strippedCode := strings.TrimSpace(code)
-				if len(strippedCode) > 0 {
-					individualCodes[strippedCode] = true
-				}
-			} else if len(rangeBounds) == 2 {
-				strippedCode1 := strings.TrimSpace(rangeBounds[0])
-				strippedCode2 := strings.TrimSpace(rangeBounds[1])
 
-				if len(strippedCode1) > 0 && len(strippedCode2) > 0 {
-					newRange, err := newCodeRange(strippedCode1, strippedCode2)
-					if err != nil {
-						return nil, err
-					}
-					codeRanges = append(codeRanges, newRange)
-				} else {
-					return nil, ErrMalformedCodeList
+	splitter := regexp.MustCompile("[A-Za-z0-9\\.]+")
+
+	for _, code := range splitter.FindAllString(codeList, -1) {
+		rangeBounds := strings.Split(code, "..")
+		if len(rangeBounds) == 1 {
+			strippedCode := strings.TrimSpace(code)
+			if len(strippedCode) > 0 {
+				individualCodes[strippedCode] = true
+			}
+		} else if len(rangeBounds) == 2 {
+			strippedCode1 := strings.TrimSpace(rangeBounds[0])
+			strippedCode2 := strings.TrimSpace(rangeBounds[1])
+
+			if len(strippedCode1) > 0 && len(strippedCode2) > 0 {
+				newRange, err := newCodeRange(strippedCode1, strippedCode2)
+				if err != nil {
+					return nil, err
 				}
+				codeRanges = append(codeRanges, newRange)
 			} else {
 				return nil, ErrMalformedCodeList
 			}
+		} else {
+			return nil, ErrMalformedCodeList
 		}
 	}
 	return &CodeList{codes: individualCodes, codeRanges: codeRanges}, nil
@@ -207,6 +213,7 @@ func (c *CodeList) Includes(code string) bool {
 			}
 		}
 	}
+
 	return false
 }
 
