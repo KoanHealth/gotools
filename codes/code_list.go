@@ -21,6 +21,18 @@ type CodeList struct {
 	strictMatch bool
 }
 
+func (cc *CodeList) String() string {
+	keys := make([]string, 0, len(cc.codes))
+
+	i := 0
+	for k := range cc.codes {
+		keys[i] = k
+		i++
+	}
+
+	return strings.Join(keys, ",")
+}
+
 func CompactCodes(minimumRangeLength int, codeStrings ...string) (result string, err error) {
 	input := slices.StringSlice(codeStrings)
 	hasCodeRanges := input.Any(func(element string) bool {
