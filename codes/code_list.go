@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/koanhealth/gotools/slices"
-	"sort"
 	"regexp"
+	"sort"
 )
 
 var (
@@ -59,7 +59,7 @@ func CompactCodes(minimumRangeLength int, codeStrings ...string) (result string,
 		rangeEndIndex := index + 1
 		rangeExpression := ""
 		for ; rangeEndIndex < len(input); rangeEndIndex += 1 {
-			if exp, detected := detectRange(input[index: rangeEndIndex+1]); detected {
+			if exp, detected := detectRange(input[index : rangeEndIndex+1]); detected {
 				rangeExpression = exp
 			} else {
 				break
