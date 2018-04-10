@@ -128,6 +128,7 @@ func (r DateRange) IsImmediatelyAfter(dr DateRange) bool {
 func (r DateRange) IsBefore(dr DateRange) bool {
 	return TimeLessThanOrEqualTo(r.Max, dr.Min)
 }
+
 func (r DateRange) IsImmediatelyBefore(dr DateRange) bool {
 	return r.IsBefore(dr) && TimeLessThanOrEqualTo(dr.Min.AddDate(0, 0, -1), r.Max)
 }

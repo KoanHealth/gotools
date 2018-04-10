@@ -27,9 +27,7 @@ func (m MonthNumber) IsValid() bool {
 	return true
 }
 func (m MonthNumber) YearsFromNow(num int) MonthNumber {
-	year := m.Year()
-	month := int(m.Month())
-	return NewMonthNumber(year+num, time.Month(month))
+	return NewMonthNumber(m.Year()+num, m.Month())
 }
 
 func (m MonthNumber) YearsAgo(num int) MonthNumber {
