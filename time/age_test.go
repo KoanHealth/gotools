@@ -1,9 +1,9 @@
-package time
+package time_test
 
 import (
 	"time"
 
-	//. "github.com/KoanHealth/gotools/time"
+	. "github.com/koanhealth/gotools/time"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )

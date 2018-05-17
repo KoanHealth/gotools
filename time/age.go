@@ -3,7 +3,7 @@ package time
 import "time"
 
 // AgeAt gets the age of an entity at a certain time.
-func AgeAt(birthDate time.Time, now time.Time) int {
+func AgeAt(birthDate, now time.Time) int {
 	// Get the year number change since the player's birth.
 	years := now.Year() - birthDate.Year()
 
@@ -17,7 +17,7 @@ func AgeAt(birthDate time.Time, now time.Time) int {
 }
 
 // AgeAtInMonths gets the age in months of an entity at a certain time.
-func AgeAtInMonths(birthDate time.Time, now time.Time) int {
+func AgeAtInMonths(birthDate, now time.Time) int {
 	// Get the month number change since the player's birth.
 	months := now.Sub(birthDate).Hours() / 24 / 365 * 12
 
