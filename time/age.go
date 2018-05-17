@@ -10,10 +10,18 @@ func AgeAt(birthDate time.Time, now time.Time) int {
 	// If the date is before the date of birth, then not that many years have elapsed.
 	birthDay := getAdjustedBirthDay(birthDate, now)
 	if now.YearDay() < birthDay {
-		years -= 1
+		years--
 	}
 
 	return years
+}
+
+// AgeAtInMonths gets the age in months of an entity at a certain time.
+func AgeAtInMonths(birthDate time.Time, now time.Time) int {
+	// Get the month number change since the player's birth.
+	months := now.Sub(birthDate).Hours() / 24 / 365 * 12
+
+	return int(months)
 }
 
 // Age is shorthand for AgeAt(birthDate, time.Now()), and carries the same usage and limitations.
