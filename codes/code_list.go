@@ -196,19 +196,19 @@ func TryParseCodeList(codeList string) (*CodeList, error) {
 	return &CodeList{codes: individualCodes, codeRanges: codeRanges}, nil
 }
 
-func (c *CodeList) WithStrictMatching() *CodeList {
-	c.strictMatch = true
-	return c
+func (cc *CodeList) WithStrictMatching() *CodeList {
+	cc.strictMatch = true
+	return cc
 }
 
-func (c *CodeList) Includes(code string) bool {
+func (cc *CodeList) Includes(code string) bool {
 	code = strings.ToUpper(code)
-	_, present := c.codes[code]
+	_, present := cc.codes[code]
 	if present {
 		return true
 	} else {
-		for _, codeRange := range c.codeRanges {
-			if codeRange.contains(code, c.strictMatch) {
+		for _, codeRange := range cc.codeRanges {
+			if codeRange.contains(code, cc.strictMatch) {
 				return true
 			}
 		}
@@ -217,13 +217,26 @@ func (c *CodeList) Includes(code string) bool {
 	return false
 }
 
-func (c *CodeList) IncludesAny(codeList ...string) bool {
+func (cc *CodeList) IncludesAny(codeList ...string) bool {
 	for _, code := range codeList {
-		if c.Includes(code) {
+		if cc.Includes(code) {
 			return true
 		}
 	}
 	return false
+}
+
+func (cc *CodeList) HasAny(codes ...string) bool {
+	return cc.IncludesAny(codes...)
+}
+
+func (cc *CodeList) HasAll(codes ...string) bool {
+	for _, code := range codes {
+		if !cc.Includes(code) {
+			return false
+		}
+	}
+	return true
 }
 
 type codeRange struct {
