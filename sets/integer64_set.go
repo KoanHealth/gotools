@@ -55,9 +55,11 @@ func (s Integer64Set) HasAll(items ...int64) bool {
 }
 
 func (s Integer64Set) String() string {
-	items := make([]string, 0, len(s))
-	for k := range s {
-		items = append(items, strconv.FormatInt(k, 10))
+	sorted := s.SortedItems()
+	items := make([]string, len(sorted))
+
+	for i := 0; i < len(sorted); i++ {
+		items[i] = strconv.FormatInt(sorted[i], 10)
 	}
 
 	return strings.Join(items, ", ")

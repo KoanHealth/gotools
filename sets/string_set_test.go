@@ -39,4 +39,12 @@ var _ = Describe("StringSet", func() {
 
 	})
 
+	Describe("Stringer", func() {
+
+		It("works", func() {
+			Expect(set.String()).To(Equal(", A, B, C, TOM"))
+		})
+
+	})
+
 })

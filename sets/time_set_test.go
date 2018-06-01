@@ -63,4 +63,12 @@ var _ = Describe("TimeSet", func() {
 
 	})
 
+	Describe("Stringer", func() {
+
+		It("works", func() {
+			Expect(set.String()).To(Equal("0001-01-01 00:00:00 +0000 UTC, 2018-01-01 00:00:00 +0000 UTC, 2018-02-01 00:00:00 +0000 UTC, 2018-03-01 00:00:00 +0000 UTC"))
+		})
+
+	})
+
 })

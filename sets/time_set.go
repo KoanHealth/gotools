@@ -58,9 +58,11 @@ func (s TimeSet) HasAll(items ...time.Time) bool {
 }
 
 func (s TimeSet) String() string {
-	items := make([]string, 0, len(s))
-	for k := range s {
-		items = append(items, fmt.Sprintf("%v", k))
+	sorted := s.SortedItems()
+	items := make([]string, len(sorted))
+
+	for i := 0; i < len(sorted); i++ {
+		items[i] = fmt.Sprintf("%v", sorted[i])
 	}
 
 	return strings.Join(items, ", ")

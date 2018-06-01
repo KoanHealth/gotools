@@ -40,4 +40,12 @@ var _ = Describe("Integer64Set", func() {
 
 	})
 
+	Describe("Stringer", func() {
+
+		It("works", func() {
+			Expect(set.String()).To(Equal("1, 2, 3, 4"))
+		})
+
+	})
+
 })

@@ -55,9 +55,11 @@ func (s IntegerSet) HasAll(items ...int) bool {
 }
 
 func (s IntegerSet) String() string {
-	items := make([]string, 0, len(s))
-	for k := range s {
-		items = append(items, strconv.Itoa(k))
+	sorted := s.SortedItems()
+	items := make([]string, len(sorted))
+
+	for i := 0; i < len(sorted); i++ {
+		items[i] = strconv.Itoa(sorted[i])
 	}
 
 	return strings.Join(items, ", ")

@@ -52,10 +52,5 @@ func (s StringSet) HasAll(items ...string) bool {
 }
 
 func (s StringSet) String() string {
-	items := make([]string, 0, len(s))
-	for k := range s {
-		items = append(items, k)
-	}
-
-	return strings.Join(items, ", ")
+	return strings.Join(s.SortedItems(), ", ")
 }
