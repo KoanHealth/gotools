@@ -19,5 +19,5 @@ build: $(shell find . -name "*.go")
 clean:
 	go clean
 
-test:
+test: build
 	ginkgo -r
