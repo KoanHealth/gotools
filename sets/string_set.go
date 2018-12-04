@@ -8,9 +8,13 @@ import (
 type StringSet map[string]struct{}
 
 func NewStringSet(items ...string) StringSet {
-	set := StringSet{}
+	set := NewSizedStringSet(len(items))
 	set.Add(items...)
 	return set
+}
+
+func NewSizedStringSet(capacity int) StringSet {
+	return make(StringSet, capacity)
 }
 
 func (s StringSet) Add(items ...string) {

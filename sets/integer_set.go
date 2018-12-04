@@ -9,9 +9,13 @@ import (
 type IntegerSet map[int]struct{}
 
 func NewIntegerSet(items ...int) IntegerSet {
-	set := IntegerSet{}
+	set := NewSizedIntegerSet(len(items))
 	set.Add(items...)
 	return set
+}
+
+func NewSizedIntegerSet(capacity int) IntegerSet {
+	return make(IntegerSet, capacity)
 }
 
 func (s IntegerSet) Add(items ...int) {

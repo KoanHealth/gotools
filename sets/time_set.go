@@ -10,9 +10,13 @@ import (
 type TimeSet map[time.Time]struct{}
 
 func NewTimeSet(items ...time.Time) TimeSet {
-	set := TimeSet{}
+	set := NewSizedTimeSet(len(items))
 	set.Add(items...)
 	return set
+}
+
+func NewSizedTimeSet(capacity int) TimeSet {
+	return make(TimeSet, capacity)
 }
 
 func (s TimeSet) Add(items ...time.Time) {
