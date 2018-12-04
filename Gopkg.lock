@@ -2,6 +2,7 @@
 
 
 [[projects]]
+  digest = "1:9ef1e277f5abd99e7112270a7093b0d87a2c608a85fc84392d52098bd1a74b27"
   name = "github.com/onsi/ginkgo"
   packages = [
     ".",
@@ -21,12 +22,14 @@
     "reporters/stenographer",
     "reporters/stenographer/support/go-colorable",
     "reporters/stenographer/support/go-isatty",
-    "types"
+    "types",
   ]
+  pruneopts = ""
   revision = "77a8c1e5c40d6bb6c5eb4dd4bdce9763564f6298"
   version = "v1.3.1"
 
 [[projects]]
+  digest = "1:e3f109462222373fe841df74272fc1f7e3f4a011d4575394ebc36336cbf9fe85"
   name = "github.com/onsi/gomega"
   packages = [
     ".",
@@ -40,26 +43,34 @@
     "matchers/support/goraph/edge",
     "matchers/support/goraph/node",
     "matchers/support/goraph/util",
-    "types"
+    "types",
   ]
+  pruneopts = ""
   revision = "334b8f472b3af5d541c5642701c1e29e2126f486"
   version = "v1.1.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:2490b44f1c148369f01731d6eb3069b3fb551a9fed85b04efa1aed6c1467b92d"
   name = "golang.org/x/sys"
   packages = ["unix"]
+  pruneopts = ""
   revision = "6faef541c73732f438fb660a212750a9ba9f9362"
 
 [[projects]]
   branch = "v2"
+  digest = "1:a3a9e86d4cd7b56a405875f475a6bb29f4614692fddf33e10eca5c839250b49e"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
+  pruneopts = ""
   revision = "cd8b52f8269e0feb286dfeef29f8fe4d5b397e0b"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3de2e64ac81f72a4539ad683af9d5cdefcfc472574f286328bcc4d41cd77b954"
+  input-imports = [
+    "github.com/onsi/ginkgo",
+    "github.com/onsi/gomega",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
