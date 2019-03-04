@@ -17,6 +17,7 @@ var (
 	ErrMalformedCodeList = errors.New("Malformed code list")
 )
 
+//Deprecated: Use the Code/Value sets in Member Analysis
 type CodeList struct {
 	codes       map[string]bool
 	codeRanges  []codeRange
