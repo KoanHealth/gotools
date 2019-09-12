@@ -6,6 +6,21 @@ func Date(y int, m time.Month, d int) time.Time {
 	return time.Date(y, m, d, 0, 0, 0, 0, time.UTC)
 }
 
+func Min(l,r time.Time) time.Time {
+	if l.Before(r) {
+		return l
+	} else {
+		return r
+	}
+}
+
+func Max(l,r time.Time) time.Time {
+	if l.After(r) {
+		return l
+	} else {
+		return r
+	}
+}
 func FormatDate(t time.Time) string {
 	return t.Format(DateFormat)
 }
