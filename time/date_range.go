@@ -32,7 +32,7 @@ func NewDateRange(start, end time.Time) DateRange {
 
 func (r DateRange) String() string {
 	if r.IsEmpty() {
-		return "[ Empty }"
+		return "[ Empty ]"
 	} else {
 		return fmt.Sprintf("[%s - %s]", r.Min.Format(DateFormat), r.Max.Format(DateFormat))
 	}
@@ -42,7 +42,20 @@ func (r DateRange) IsEmpty() bool {
 	return r.Min.IsZero() && r.Max.IsZero()
 }
 
+func (r DateRange) Days() int {
+	if r.IsEmpty() {
+		return 0
+	}
+	return r.DaysBetween() + 1
+}
+
 func (r DateRange) DaysBetween() int {
+	return r.Duration()
+}
+
+func (r DateRange) Duration() int {
+	// Since the time isn't specified for the Min/Max day, the evaluation takes place in UTC
+	// daylight savings time is not an issue
 	return int(r.Max.Sub(r.Min).Hours() / 24.0)
 }
 

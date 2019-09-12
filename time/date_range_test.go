@@ -140,18 +140,40 @@ var _ = Describe("DateRange", func() {
 		})
 
 		It("Evaluates duration correctly", func() {
-			r1 := NewDateRange(Date(2012, 1, 31), Date(2012, 2, 17))
-			Expect(r1.DaysBetween()).To(Equal(17))
+			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 1, 15))
+			Expect(r1.Duration()).To(Equal(14))
 		})
 
-		It("Zero length range has 0 duration", func() {
-			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 1, 1))
-			Expect(r1.DaysBetween()).To(Equal(0))
+		It("Evaluates duration correctly", func() {
+			r1 := NewDateRange(Date(2012, 1, 31), Date(2012, 2, 17))
+			Expect(r1.Duration()).To(Equal(17))
 		})
 
 		It("Empty range has zero duration", func() {
-			Expect(NewEmptyDateRange().DaysBetween()).To(Equal(0))
+			Expect(NewEmptyDateRange().Duration()).To(Equal(0))
 		})
+	})
+
+	Context("Duration (Days)", func(){
+		It("Evaluates duration correctly", func() {
+			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 1, 15))
+			Expect(r1.Days()).To(Equal(15))
+		})
+
+		It("Evaluates duration correctly", func() {
+			r1 := NewDateRange(Date(2012, 1, 31), Date(2012, 2, 17))
+			Expect(r1.Days()).To(Equal(18))
+		})
+
+		It("One day range has 1 day", func() {
+			r1 := NewDateRange(Date(2019, 1, 1), Date(2019, 1, 1))
+			Expect(r1.Days()).To(Equal(1))
+		})
+
+		It("Empty range has zero duration", func() {
+			Expect(NewEmptyDateRange().Days()).To(Equal(0))
+		})
+
 	})
 
 	Context("Operations", func() {
