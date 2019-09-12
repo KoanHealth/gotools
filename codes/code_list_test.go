@@ -1,7 +1,6 @@
-package codes_test
+package codes
 
 import (
-	. "github.com/koanhealth/gotools/codes"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )

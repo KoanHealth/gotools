@@ -1,4 +1,4 @@
-package time_test
+package time
 
 import (
 	. "github.com/onsi/ginkgo"
