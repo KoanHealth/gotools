@@ -17,7 +17,6 @@ var (
 	ErrMalformedCodeList = errors.New("Malformed code list")
 )
 
-//Deprecated: Use the Code/Value sets in Member Analysis
 type CodeList struct {
 	codes       map[string]bool
 	codeRanges  []codeRange
@@ -151,7 +150,6 @@ func IncrementString(input string) string {
 	}
 }
 
-//Deprecated: Use the Code/Value sets in Member Analysis
 func ParseCodeList(codeList string) *CodeList {
 	cl, err := TryParseCodeList(codeList)
 	if err != nil {
@@ -160,7 +158,6 @@ func ParseCodeList(codeList string) *CodeList {
 	return cl
 }
 
-//Deprecated: Use the Code/Value sets in Member Analysis
 func TryParseCodeList(codeList string) (*CodeList, error) {
 	codeList = strings.TrimSpace(strings.ToUpper(codeList))
 	if codeList == "" {
@@ -199,7 +196,6 @@ func TryParseCodeList(codeList string) (*CodeList, error) {
 	return &CodeList{codes: individualCodes, codeRanges: codeRanges}, nil
 }
 
-//Deprecated: Use the Code/Value sets in Member Analysis
 func (cc *CodeList) WithStrictMatching() *CodeList {
 	cc.strictMatch = true
 	return cc
