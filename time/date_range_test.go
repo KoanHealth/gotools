@@ -40,6 +40,33 @@ var _ = Describe("DateRange", func() {
 		})
 	})
 
+	Context("Extension", func() {
+		It("Empty Range extended forward is still empty", func() {
+			r0 := NewEmptyDateRange()
+			r1 := r0.IncludeNextYears(1)
+			Expect(r1.IsEmpty()).To(BeTrue())
+		})
+		It("Empty Range extended backwards is still empty", func() {
+			r0 := NewEmptyDateRange()
+			r1 := r0.IncludePreviousYears(1)
+			Expect(r1.IsEmpty()).To(BeTrue())
+		})
+		It("Extend date range forward", func() {
+			r0 := NewDateRange(Date(2012, 1, 1), Date(2012, 12, 31) )
+			r1 := r0.IncludeNextYears(1)
+			Expect(r1.IsEmpty()).To(BeFalse())
+			Expect(r1.Min).To(Equal(Date(2012,1,1)))
+			Expect(r1.Max).To(Equal(Date(2013,12,31)))
+		})
+		It("Extend date range backwards", func() {
+			r0 := NewDateRange(Date(2012, 1, 1), Date(2012, 12, 31) )
+			r1 := r0.IncludePreviousYears(1)
+			Expect(r1.IsEmpty()).To(BeFalse())
+			Expect(r1.Min).To(Equal(Date(2011,1,1)))
+			Expect(r1.Max).To(Equal(Date(2012,12,31)))
+		})
+	})
+
 	Context("Includes", func() {
 		It("returns true if date is inside range", func() {
 			r1 := NewDateRange(Date(2012, 1, 2), Date(2012, 1, 5))

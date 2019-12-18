@@ -37,6 +37,13 @@ func (r DateRange) String() string {
 		return fmt.Sprintf("[%s - %s]", r.Min.Format(DateFormat), r.Max.Format(DateFormat))
 	}
 }
+func (r DateRange) IncludeNextYears(n int) DateRange {
+	return NewDateRange(r.Min, r.Max.AddDate(n,0,0))
+}
+
+func (r DateRange) IncludePreviousYears(n int) DateRange {
+	return NewDateRange(r.Min.AddDate(-n,0,0), r.Max)
+}
 
 func (r DateRange) IsEmpty() bool {
 	return r.Min.IsZero() && r.Max.IsZero()
