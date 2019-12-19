@@ -21,6 +21,29 @@ func Max(l,r time.Time) time.Time {
 		return r
 	}
 }
+
+func Earliest(times ...time.Time) time.Time {
+	result := time.Time{}
+	for _, t := range times {
+		if t.IsZero() { continue }
+		if result.IsZero() || t.Before(result) {
+			result = t
+		}
+	}
+	return result
+}
+
+func Latest(times ...time.Time) time.Time {
+	result := time.Time{}
+	for _, t := range times {
+		if t.IsZero() { continue }
+		if result.IsZero() || t.After(result) {
+			result = t
+		}
+	}
+	return result
+}
+
 func FormatDate(t time.Time) string {
 	return t.Format(DateFormat)
 }
