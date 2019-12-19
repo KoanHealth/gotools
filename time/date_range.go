@@ -160,3 +160,54 @@ func TimeLessThanOrEqualTo(lhs, rhs time.Time) bool {
 func TimeGreaterThanOrEqualTo(lhs, rhs time.Time) bool {
 	return lhs.Equal(rhs) || lhs.After(rhs)
 }
+
+func EarliestStart(drs ...DateRange) DateRange {
+	var dates []time.Time
+	for _, r := range drs {
+		dates = append(dates, r.Min)
+	}
+	idx := EarliestIndex(dates...)
+	if idx >= 0 {
+		return drs[idx]
+	} else {
+		return NewEmptyDateRange()
+	}
+}
+
+func LatestStart(drs ...DateRange) DateRange {
+	var dates []time.Time
+	for _, r := range drs {
+		dates = append(dates, r.Min)
+	}
+	idx := LatestIndex(dates...)
+	if idx >= 0 {
+		return drs[idx]
+	} else {
+		return NewEmptyDateRange()
+	}
+}
+func EarliestEnd(drs ...DateRange) DateRange {
+	var dates []time.Time
+	for _, r := range drs {
+		dates = append(dates, r.Max)
+	}
+	idx := EarliestIndex(dates...)
+	if idx >= 0 {
+		return drs[idx]
+	} else {
+		return NewEmptyDateRange()
+	}
+}
+
+func LatestEnd(drs ...DateRange) DateRange {
+	var dates []time.Time
+	for _, r := range drs {
+		dates = append(dates, r.Max)
+	}
+	idx := LatestIndex(dates...)
+	if idx >= 0 {
+		return drs[idx]
+	} else {
+		return NewEmptyDateRange()
+	}
+}

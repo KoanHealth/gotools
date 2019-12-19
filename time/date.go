@@ -22,26 +22,48 @@ func Max(l,r time.Time) time.Time {
 	}
 }
 
-func Earliest(times ...time.Time) time.Time {
+func EarliestIndex(times ...time.Time) int {
 	result := time.Time{}
-	for _, t := range times {
+	index := -1
+	for i, t := range times {
 		if t.IsZero() { continue }
 		if result.IsZero() || t.Before(result) {
 			result = t
+			index = i
 		}
 	}
-	return result
+	return index
 }
 
-func Latest(times ...time.Time) time.Time {
+func Earliest(times ...time.Time) time.Time {
+	idx := EarliestIndex(times...)
+	if idx >= 0 {
+		return times[idx]
+	} else {
+		return time.Time{}
+	}
+}
+
+func LatestIndex(times ...time.Time) int {
 	result := time.Time{}
-	for _, t := range times {
+	index := -1
+	for i, t := range times {
 		if t.IsZero() { continue }
 		if result.IsZero() || t.After(result) {
 			result = t
+			index = i
 		}
 	}
-	return result
+	return index
+}
+
+func Latest(times ...time.Time) time.Time {
+	idx := LatestIndex(times...)
+	if idx >= 0 {
+		return times[idx]
+	} else {
+		return time.Time{}
+	}
 }
 
 func FormatDate(t time.Time) string {

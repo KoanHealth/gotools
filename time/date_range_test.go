@@ -297,6 +297,39 @@ var _ = Describe("DateRange", func() {
 			Expect(NewDateRange(Date(2011, 12, 15), Date(2011, 12, 31)).IsAdjacentTo(r1)).To(BeTrue())
 			Expect(NewDateRange(Date(2011, 12, 15), Date(2012, 1, 1)).IsAdjacentTo(r1)).To(BeTrue())
 		})
+	})
+	Context("Earliest/Latest", func() {
+		defaultRanges:= []DateRange{
+			NewEmptyDateRange(),
+			NewDateRange(Date(2012, 1, 20), Date(2012, 1, 27)),
+			NewDateRange(Date(2012, 1, 25), Date(2012, 1, 26)),
+			NewDateRange(Date(2012, 1, 24), Date(2012, 1, 28)),
+		}
+
+		It("Earliest End", func() {
+			Expect(EarliestEnd(defaultRanges...)).To(Equal(defaultRanges[2]))
+			Expect(EarliestEnd().IsEmpty()).To(BeTrue())
+			Expect(EarliestEnd(NewEmptyDateRange(), NewEmptyDateRange()).IsEmpty()).To(BeTrue())
+		})
+
+		It("Latest End", func() {
+			Expect(LatestEnd(defaultRanges...)).To(Equal(defaultRanges[3]))
+			Expect(LatestEnd().IsEmpty()).To(BeTrue())
+			Expect(LatestEnd(NewEmptyDateRange(), NewEmptyDateRange()).IsEmpty()).To(BeTrue())
+		})
+
+		It("EarliestStart", func() {
+			Expect(EarliestStart(defaultRanges...)).To(Equal(defaultRanges[1]))
+			Expect(EarliestStart().IsEmpty()).To(BeTrue())
+			Expect(EarliestStart(NewEmptyDateRange(), NewEmptyDateRange()).IsEmpty()).To(BeTrue())
+		})
+
+		It("LatestStart", func() {
+			Expect(LatestStart(defaultRanges...)).To(Equal(defaultRanges[2]))
+			Expect(LatestStart().IsEmpty()).To(BeTrue())
+			Expect(LatestStart(NewEmptyDateRange(), NewEmptyDateRange()).IsEmpty()).To(BeTrue())
+		})
+
 
 	})
 })
