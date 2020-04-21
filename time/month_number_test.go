@@ -29,6 +29,12 @@ var _ = Describe("Month Number", func() {
 			}
 		})
 
+		It("Default Value is not valid", func() {
+			var unset int
+			invalid := MonthNumber(unset)
+			Expect(invalid.IsValid()).To(BeFalse())
+		})
+
 	})
 
 	Context("Date Conversions", func() {
