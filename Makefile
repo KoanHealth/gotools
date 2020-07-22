@@ -23,5 +23,5 @@ test: build
 	ginkgo -r
 
 version:
-	git tag $(git tag --list --sort=-taggerdate v* | head -n 1 | awk -F. -v OFS=. '{$NF++;print}')
+	git tag $(shell git tag --list --sort=-v:refname v* | head -n 1 | awk -F. -v OFS=. '{$$NF++;print}')
 	git push origin master --tag
