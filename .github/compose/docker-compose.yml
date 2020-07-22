@@ -1,0 +1,10 @@
+version: '3'
+services:
+  test:
+    build:
+      context: ../..
+      dockerfile: .github/compose/testing.Dockerfile
+      args:
+        - BUNDLE_GITHUB__COM
+
+    entrypoint: ./docker_entrypoint_test.sh

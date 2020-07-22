@@ -1,0 +1,32 @@
+name: Build & Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+env:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_GITHUB_WEBHOOK }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      id: checkout
+      uses: actions/checkout@v2
+    - name: Build
+      id: build
+      run: docker-compose -f .github/compose/docker-compose.yml build
+    - name: Test
+      id: test
+      run: docker-compose -f .github/compose/docker-compose.yml run test
+    - uses: act10ns/slack@v1
+      with:
+        status: ${{ job.status }}
+        steps: ${{ toJson(steps) }}
+        channel: '#github'
+      if: failure()
