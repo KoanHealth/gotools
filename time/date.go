@@ -70,6 +70,14 @@ func FormatDate(t time.Time) string {
 	return t.Format(DateFormat)
 }
 
+func FormatDateP(t *time.Time) string {
+	if t == nil {
+		return "<nil>"
+	} else {
+		return (*t).Format(DateFormat)
+	}
+}
+
 const (
 	DateFormat = "1/2/2006"
 )
