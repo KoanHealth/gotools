@@ -153,3 +153,15 @@ func (m MonthNumber) Range(other MonthNumber) []MonthNumber {
 
 	return months
 }
+
+func (m MonthNumber) Equal(other MonthNumber) bool {
+	return int(m) == int(other)
+}
+
+func (m MonthNumber) Before(other MonthNumber) bool {
+	return int(m) < int(other)
+}
+
+func (m MonthNumber) After(other MonthNumber) bool {
+	return int(m) > int(other)
+}

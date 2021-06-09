@@ -163,4 +163,48 @@ var _ = Describe("Month Number", func() {
 		})
 	})
 
+	Context("Equal", func() {
+
+		It("Returns true if they are equal", func() {
+			Expect(MonthNumber(202012).Equal(MonthNumber(202012))).To(BeTrue())
+		})
+
+		It("Returns false if they are not equal", func() {
+			Expect(MonthNumber(202012).Equal(MonthNumber(202011))).To(BeFalse())
+		})
+
+	})
+
+	Context("Before", func() {
+
+		It("Returns true if month before another", func() {
+			Expect(MonthNumber(202011).Before(MonthNumber(202012))).To(BeTrue())
+		})
+
+		It("Returns false if month equals another", func() {
+			Expect(MonthNumber(202012).Before(MonthNumber(202012))).To(BeFalse())
+		})
+
+		It("Returns false if month after another", func() {
+			Expect(MonthNumber(202012).Before(MonthNumber(202011))).To(BeFalse())
+		})
+
+	})
+
+	Context("After", func() {
+
+		It("Returns true if month after another", func() {
+			Expect(MonthNumber(202012).After(MonthNumber(202011))).To(BeTrue())
+		})
+
+		It("Returns false if month equals another", func() {
+			Expect(MonthNumber(202012).After(MonthNumber(202012))).To(BeFalse())
+		})
+
+		It("Returns false if month before another", func() {
+			Expect(MonthNumber(202011).After(MonthNumber(202012))).To(BeFalse())
+		})
+
+	})
+
 })
