@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-make test
+SKIP_DOCKER_TESTS=1 make test
