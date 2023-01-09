@@ -27,6 +27,7 @@ type DockerCallback func(cmd *exec.Cmd) error
 
 func UsingTempDir(block TempDirCallback) {
 	path := filepath.Join(dockerTempDir(), uuid.New().String())
+	os.MkdirAll(path, os.ModePerm)
 	block(path)
 	os.RemoveAll(path)
 }
