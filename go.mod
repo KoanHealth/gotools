@@ -3,12 +3,15 @@ module github.com/koanhealth/gotools
 go 1.18
 
 require (
+	github.com/google/uuid v1.3.0
+	github.com/kr/pretty v0.2.1
 	github.com/onsi/ginkgo v1.16.4
 	github.com/onsi/gomega v1.16.0
 )
 
 require (
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
+	github.com/kr/text v0.1.0 // indirect
 	github.com/nxadm/tail v1.4.8 // indirect
 	golang.org/x/net v0.0.0-20210903162142-ad29c8ab022f // indirect
 	golang.org/x/sys v0.0.0-20210906170528-6f6e22806c34 // indirect
