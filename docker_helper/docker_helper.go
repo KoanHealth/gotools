@@ -14,8 +14,9 @@ import (
 )
 
 const (
-	DockerOptionNoRemove = "no_remove"
-	DockerOptionRetries  = "retries"
+	DockerOptionNoRemove     = "no_remove"
+	DockerOptionRetries      = "retries"
+	DockerOptionDockerSocket = "docker_sock"
 )
 
 var (
@@ -97,21 +98,24 @@ func RunIndirect(cmd, image string, options DockerOptions, block DockerCallback)
 		retries = 2
 	}
 
-	mergeDefaultVolumes(options)
+	sock := false
+	if s, found := options[DockerOptionDockerSocket]; found {
+		sock = convert.ToBool(s)
+		delete(options, DockerOptionDockerSocket)
+	}
+
+	if sock {
+		ensureDockerSocket(options)
+	}
+
 	runOptions := formatDockerRunOptions(cmd, image, options)
 	log.Printf("Docker RUN: %s", strings.Join(runOptions, " "))
 	return invokeCmd(runOptions, retries, block)
 }
 
-// always pass the docker socket to the invoked container
-// the container needs to install the docker cli to use it (and can just ignore this if it doesn't)
-// Allows docker containers to invoke docker containers (it's turtles all the way down)
-// For now hard coding to the known path of the host (where the daemon runs and to whom all paths must make sense)
-func defaultVolumeMappings() map[string]string {
-	return map[string]string{"/var/run/docker.sock": "/var/run/docker.sock"}
-}
+const dockerSocket = "/var/run/docker.sock"
 
-func mergeDefaultVolumes(options map[string]interface{}) {
+func ensureDockerSocket(options map[string]interface{}) {
 	var volumeOptions map[string]string
 
 	if v, found := options["v"]; found {
@@ -119,15 +123,20 @@ func mergeDefaultVolumes(options map[string]interface{}) {
 		case map[string]string:
 			volumeOptions = volumes
 		}
+	} else if v, found = options["volume"]; found {
+		switch volumes := v.(type) {
+		case map[string]string:
+			volumeOptions = volumes
+		}
 	}
+
 	if volumeOptions == nil {
 		volumeOptions = make(map[string]string)
 		options["v"] = volumeOptions
 	}
-	for k, v := range defaultVolumeMappings() {
-		if _, found := volumeOptions[k]; !found {
-			volumeOptions[k] = v
-		}
+
+	if _, found := volumeOptions[dockerSocket]; !found {
+		volumeOptions[dockerSocket] = dockerSocket
 	}
 }
 func formatDockerRunOptions(cmd, imageName string, options DockerOptions) (runOptions []string) {

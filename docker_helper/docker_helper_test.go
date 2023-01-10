@@ -88,7 +88,7 @@ var _ = Describe("Docker Helper", func() {
 
 		It("retries the expected number of times", func() {
 			var executionCount int
-			RunIndirect("cat not_there", IMAGE, map[string]interface{}{"retries": 4}, func(cmd *exec.Cmd) error {
+			RunIndirect("cat not_there", IMAGE, map[string]interface{}{DockerOptionRetries: 4}, func(cmd *exec.Cmd) error {
 				_, e := cmd.Output()
 				executionCount += 1
 				return e
@@ -98,13 +98,64 @@ var _ = Describe("Docker Helper", func() {
 	})
 
 	Context("formatOptions", func() {
-		It("automatically adds docker sock volume", func() {
-			options := map[string]interface{}{
-				"test": "value",
-			}
-			mergeDefaultVolumes(options)
-			formattedOptions := strings.Join(formatOptions(options), " ")
+		It("adds the docker socket when requested", func() {
+			var args []string
+			RunIndirect("ls", IMAGE, map[string]interface{}{DockerOptionDockerSocket: true}, func(cmd *exec.Cmd) error {
+				// Don't execute, only capturing the args
+				args = cmd.Args
+				return nil
+			})
+			formattedOptions := strings.Join(args, " ")
 			Expect(formattedOptions).To(ContainSubstring("-v /var/run/docker.sock:/var/run/docker.sock"))
+		})
+
+		It("doesn't add the docker socket when not requested", func() {
+			var args []string
+			RunIndirect("ls", IMAGE, map[string]interface{}{}, func(cmd *exec.Cmd) error {
+				// Don't execute, only capturing the args
+				args = cmd.Args
+				return nil
+			})
+			formattedOptions := strings.Join(args, " ")
+			Expect(formattedOptions).NotTo(ContainSubstring("-v /var/run/docker.sock:/var/run/docker.sock"))
+		})
+		It("allows docker sock to be overridden -v", func() {
+			options := map[string]interface{}{
+				"v": map[string]string{
+					"$(which docker)":      "/bin/docker",
+					"/var/run/docker.sock": "moofy",
+				},
+			}
+
+			var args []string
+			RunIndirect("ls", IMAGE, options, func(cmd *exec.Cmd) error {
+				// Don't execute, only capturing the args
+				args = cmd.Args
+				return nil
+			})
+			formattedOptions := strings.Join(args, " ")
+			Expect(formattedOptions).To(ContainSubstring("-v $(which docker):/bin/docker"))
+			Expect(formattedOptions).To(ContainSubstring("-v /var/run/docker.sock:moofy"))
+			Expect(formattedOptions).NotTo(ContainSubstring("-v /var/run/docker.sock:/var/run/docker.sock"))
+		})
+		It("allows docker sock to be overridden --volume", func() {
+			options := map[string]interface{}{
+				"volume": map[string]string{
+					"$(which docker)":      "/bin/docker",
+					"/var/run/docker.sock": "moofy",
+				},
+			}
+
+			var args []string
+			RunIndirect("ls", IMAGE, options, func(cmd *exec.Cmd) error {
+				// Don't execute, only capturing the args
+				args = cmd.Args
+				return nil
+			})
+			formattedOptions := strings.Join(args, " ")
+			Expect(formattedOptions).To(ContainSubstring("-volume $(which docker):/bin/docker"))
+			Expect(formattedOptions).To(ContainSubstring("-volume /var/run/docker.sock:moofy"))
+			Expect(formattedOptions).NotTo(ContainSubstring("-volume /var/run/docker.sock:/var/run/docker.sock"))
 		})
 
 		It("automatically adds --rm", func() {
@@ -185,18 +236,6 @@ var _ = Describe("Docker Helper", func() {
 			}
 			formattedOptions := strings.Join(formatOptions(options), " ")
 			Expect(formattedOptions).To(ContainSubstring("-v $(which docker):/bin/docker"))
-		})
-		It("allows docker sock to be overridden", func() {
-			options := map[string]interface{}{
-				"v": map[string]string{
-					"$(which docker)":      "/bin/docker",
-					"/var/run/docker.sock": "moofy",
-				},
-			}
-			formattedOptions := strings.Join(formatOptions(options), " ")
-			Expect(formattedOptions).To(ContainSubstring("-v $(which docker):/bin/docker"))
-			Expect(formattedOptions).To(ContainSubstring("-v /var/run/docker.sock:moofy"))
-			Expect(formattedOptions).NotTo(ContainSubstring("-v /var/run/docker.sock:/var/run/docker.sock"))
 		})
 	})
 })
