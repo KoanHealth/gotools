@@ -2,9 +2,8 @@ package docker_helper
 
 import (
 	"fmt"
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"os"
 	"os/exec"
 	"strings"
 )
@@ -12,11 +11,7 @@ import (
 var IMAGE = "alpine"
 
 var _ = Describe("Docker Helper", func() {
-	Context("docker execution", func() {
-		if _, found := os.LookupEnv("SKIP_DOCKER_TESTS"); found {
-			return
-		}
-
+	Context("docker execution", Label("docker"), func() {
 		It("Executes a simple program", func() {
 			err, stdout, stderr := Run("echo 'Hello World!'", IMAGE, map[string]interface{}{})
 			Expect(stderr).To(Equal(""))
@@ -33,11 +28,7 @@ var _ = Describe("Docker Helper", func() {
 		})
 	})
 
-	Context("indirect docker execution - for when you need more detailed control of the exec.Command", func() {
-		if _, found := os.LookupEnv("SKIP_DOCKER_TESTS"); found {
-			return
-		}
-
+	Context("indirect docker execution - for when you need more detailed control of the exec.Command", Label("docker"), func() {
 		It("Executes a simple program - gathers combined output", func() {
 			var output string
 			err := RunIndirect("echo 'Hello World!", IMAGE, map[string]interface{}{}, func(cmd *exec.Cmd) error {

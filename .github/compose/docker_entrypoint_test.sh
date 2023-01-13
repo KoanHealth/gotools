@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SKIP_DOCKER_TESTS=1 make test
+make build && ginkgo -r --label-filter='!docker'

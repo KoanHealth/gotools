@@ -3,7 +3,7 @@ package time
 import (
 	"time"
 
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
 
@@ -52,18 +52,18 @@ var _ = Describe("DateRange", func() {
 			Expect(r1.IsEmpty()).To(BeTrue())
 		})
 		It("Extend date range forward", func() {
-			r0 := NewDateRange(Date(2012, 1, 1), Date(2012, 12, 31) )
+			r0 := NewDateRange(Date(2012, 1, 1), Date(2012, 12, 31))
 			r1 := r0.IncludeNextYears(1)
 			Expect(r1.IsEmpty()).To(BeFalse())
-			Expect(r1.Min).To(Equal(Date(2012,1,1)))
-			Expect(r1.Max).To(Equal(Date(2013,12,31)))
+			Expect(r1.Min).To(Equal(Date(2012, 1, 1)))
+			Expect(r1.Max).To(Equal(Date(2013, 12, 31)))
 		})
 		It("Extend date range backwards", func() {
-			r0 := NewDateRange(Date(2012, 1, 1), Date(2012, 12, 31) )
+			r0 := NewDateRange(Date(2012, 1, 1), Date(2012, 12, 31))
 			r1 := r0.IncludePreviousYears(1)
 			Expect(r1.IsEmpty()).To(BeFalse())
-			Expect(r1.Min).To(Equal(Date(2011,1,1)))
-			Expect(r1.Max).To(Equal(Date(2012,12,31)))
+			Expect(r1.Min).To(Equal(Date(2011, 1, 1)))
+			Expect(r1.Max).To(Equal(Date(2012, 12, 31)))
 		})
 	})
 
@@ -181,7 +181,7 @@ var _ = Describe("DateRange", func() {
 		})
 	})
 
-	Context("Duration (Days)", func(){
+	Context("Duration (Days)", func() {
 		It("Evaluates duration correctly", func() {
 			r1 := NewDateRange(Date(2012, 1, 1), Date(2012, 1, 15))
 			Expect(r1.Days()).To(Equal(15))
@@ -299,7 +299,7 @@ var _ = Describe("DateRange", func() {
 		})
 	})
 	Context("Earliest/Latest", func() {
-		defaultRanges:= []DateRange{
+		defaultRanges := []DateRange{
 			NewEmptyDateRange(),
 			NewDateRange(Date(2012, 1, 20), Date(2012, 1, 27)),
 			NewDateRange(Date(2012, 1, 25), Date(2012, 1, 26)),
@@ -329,7 +329,6 @@ var _ = Describe("DateRange", func() {
 			Expect(LatestStart().IsEmpty()).To(BeTrue())
 			Expect(LatestStart(NewEmptyDateRange(), NewEmptyDateRange()).IsEmpty()).To(BeTrue())
 		})
-
 
 	})
 })

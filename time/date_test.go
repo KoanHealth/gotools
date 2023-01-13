@@ -1,7 +1,7 @@
 package time
 
 import (
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"time"
 )
@@ -51,8 +51,7 @@ var _ = Describe("Date", func() {
 			)).To(Equal(Date(2019, 11, 5)))
 		})
 		It("Empty - returns zero", func() {
-			Expect(Earliest(
-			)).To(Equal(time.Time{}))
+			Expect(Earliest()).To(Equal(time.Time{}))
 		})
 		It("Only zero - returns zero", func() {
 			Expect(Earliest(
@@ -81,8 +80,7 @@ var _ = Describe("Date", func() {
 			)).To(Equal(Date(2019, 12, 5)))
 		})
 		It("Empty - returns zero", func() {
-			Expect(Latest(
-			)).To(Equal(time.Time{}))
+			Expect(Latest()).To(Equal(time.Time{}))
 		})
 		It("Only zero - returns zero", func() {
 			Expect(Latest(

@@ -1,7 +1,7 @@
 setup: ## Install all the build and lint dependencies
-	go get -u golang.org/x/tools/cmd/goimports
-	go get -u github.com/golang/lint/golint
-	go get -u go get github.com/onsi/ginkgo/ginkgo
+	go install golang.org/x/tools/cmd/goimports
+	go install github.com/golang/lint/golint
+	go install github.com/onsi/ginkgo/ginkgo/v2@latest
 
 lint:
 	golint ./...
