@@ -16,7 +16,7 @@ clean:
 	go clean
 
 test: build
-	ginkgo -r
+	go test ./... -test.v
 
 version:
 	git tag $(shell git tag --list --sort=-v:refname v* | head -n 1 | awk -F. -v OFS=. '{$$NF++;print}')

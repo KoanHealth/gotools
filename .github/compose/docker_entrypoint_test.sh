@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-make build && ginkgo -r --label-filter='!docker'
+make build && go test ./... -ginkgo.label-filter='!docker' -test.v
