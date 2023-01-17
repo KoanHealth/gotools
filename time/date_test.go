@@ -31,6 +31,12 @@ var _ = Describe("Date", func() {
 		})
 	})
 
+	Context("Coalesce", func() {
+		It("Coalesces", func() {
+			Expect(Coalesce(time.Time{}, Date(2019, 12, 2))).To(Equal(Date(2019, 12, 2)))
+		})
+	})
+
 	Context("Earliest", func() {
 		It("Compares several", func() {
 			Expect(Earliest(

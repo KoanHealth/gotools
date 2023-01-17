@@ -1,7 +1,9 @@
 package fixgo
 
+import "time"
+
 type TernaryArgument interface {
-	int | int64 | string
+	~int | ~float64 | string | time.Time
 }
 
 func Ternary[V TernaryArgument](c bool, v1, v2 V) V {
