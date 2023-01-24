@@ -35,9 +35,9 @@ func LookupOidCodeSystem(oid string) CodeSystem {
 		return CODE_SYSTEM_ICD9_PROC
 	case "2.16.840.1.113883.6.103":
 		return CODE_SYSTEM_ICD9_DIAG
-	case "2.16.840.1.113883.6.3":
+	case "2.16.840.1.113883.6.3", "2.16.840.1.113883.6.90":
 		return CODE_SYSTEM_ICD10_DIAG
-	case "2.16.840.1.113883.6.4", "2.16.840.1.113883.6.90":
+	case "2.16.840.1.113883.6.4":
 		return CODE_SYSTEM_ICD10_PROC
 	case "2.16.840.1.113883.15.4":
 		return CODE_SYSTEM_HIPPS // https: //oidref.com/2.16.840.1.113883.15.4
