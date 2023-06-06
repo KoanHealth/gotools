@@ -1,6 +1,8 @@
 package time
 
 import (
+	"fmt"
+	"strings"
 	"time"
 )
 
@@ -15,6 +17,14 @@ func NewMonthNumber(year int, month time.Month) MonthNumber {
 
 func MonthNumberForDate(date time.Time) MonthNumber {
 	return NewMonthNumber(date.Year(), date.Month())
+}
+
+func (m MonthNumber) String() string {
+	if m.IsValid() {
+		return fmt.Sprintf("[%s%d]", strings.ToUpper(m.Month().String()[0:3]), m.Year())
+	} else {
+		return "[Invalid]"
+	}
 }
 
 func (m MonthNumber) IsValid() bool {

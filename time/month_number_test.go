@@ -18,6 +18,12 @@ var _ = Describe("Month Number", func() {
 		Expect(MonthNumber(201306).Month()).To(Equal(time.June))
 	})
 
+	It("Formats as string", func() {
+		Expect(MonthNumber(202302).String()).To(Equal("[FEB2023]"))
+		Expect(MonthNumber(202306).String()).To(Equal("[JUN2023]"))
+		Expect(MonthNumber(202312).String()).To(Equal("[DEC2023]"))
+	})
+
 	Context("Validations", func() {
 
 		invalidMonths := []int{-1, 42, 10000000}
