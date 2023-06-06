@@ -13,6 +13,10 @@ func NewMonthNumber(year int, month time.Month) MonthNumber {
 	return MonthNumber(n)
 }
 
+func MonthNumberForDate(date time.Time) MonthNumber {
+	return NewMonthNumber(date.Year(), date.Month())
+}
+
 func (m MonthNumber) IsValid() bool {
 	year := m.Year()
 	if year < 0 || year > 9999 {
@@ -110,6 +114,10 @@ func (m MonthNumber) FirstDayOfFollowingMonth() time.Time {
 
 func (m MonthNumber) LastDay() time.Time {
 	return m.FirstDay().AddDate(0, 1, -1) // Add 1 month, Subtract 1 day
+}
+
+func (m MonthNumber) DateRange() DateRange {
+	return NewDateRange(m.FirstDay(), m.LastDay())
 }
 
 func (m MonthNumber) NextMonths(num int) []MonthNumber {

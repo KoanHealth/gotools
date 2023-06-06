@@ -38,7 +38,9 @@ var _ = Describe("Month Number", func() {
 	})
 
 	Context("Date Conversions", func() {
-
+		It("Parses a date", func() {
+			Expect(int(MonthNumberForDate(Date(2023, 5, 15)))).To(Equal(202305))
+		})
 		It("ToDate sets the day of month", func() {
 			expected := time.Date(2013, 12, 13, 0, 0, 0, 0, time.UTC)
 			Expect(MonthNumber(201312).ToDate(13)).To(Equal(expected))
@@ -62,6 +64,13 @@ var _ = Describe("Month Number", func() {
 		It("LastDay catches leap years", func() {
 			expected := time.Date(2012, 2, 29, 0, 0, 0, 0, time.UTC)
 			Expect(MonthNumber(201202).LastDay()).To(Equal(expected))
+		})
+
+		It("Makes a Date Range", func() {
+			dr := NewMonthNumber(2023, 6).DateRange()
+			Expect(dr.Min).To(Equal(Date(2023, 06, 01)))
+			Expect(dr.Max).To(Equal(Date(2023, 06, 30)))
+
 		})
 
 	})
