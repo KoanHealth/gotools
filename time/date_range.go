@@ -38,11 +38,11 @@ func (r DateRange) String() string {
 	}
 }
 func (r DateRange) IncludeNextYears(n int) DateRange {
-	return NewDateRange(r.Min, r.Max.AddDate(n,0,0))
+	return NewDateRange(r.Min, r.Max.AddDate(n, 0, 0))
 }
 
 func (r DateRange) IncludePreviousYears(n int) DateRange {
-	return NewDateRange(r.Min.AddDate(-n,0,0), r.Max)
+	return NewDateRange(r.Min.AddDate(-n, 0, 0), r.Max)
 }
 
 func (r DateRange) IsEmpty() bool {
@@ -209,5 +209,13 @@ func LatestEnd(drs ...DateRange) DateRange {
 		return drs[idx]
 	} else {
 		return NewEmptyDateRange()
+	}
+}
+
+func (r DateRange) MonthNumbers() []MonthNumber {
+	if r.IsEmpty() {
+		return nil
+	} else {
+		return MonthNumberForDate(r.Min).Range(MonthNumberForDate(r.Max))
 	}
 }

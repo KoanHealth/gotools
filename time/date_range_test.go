@@ -65,6 +65,15 @@ var _ = Describe("DateRange", func() {
 			Expect(r1.Min).To(Equal(Date(2011, 1, 1)))
 			Expect(r1.Max).To(Equal(Date(2012, 12, 31)))
 		})
+
+		It("Converts to Month Number Range", func() {
+			r := NewDateRange(Date(2023, 1, 1), Date(2023, 12, 31))
+			rng := r.MonthNumbers()
+			Expect(rng).To(HaveLen(12))
+			for m := 1; m <= 12; m++ {
+				Expect(rng).To(ContainElement(NewMonthNumber(2023, time.Month(m))))
+			}
+		})
 	})
 
 	Context("Includes", func() {
