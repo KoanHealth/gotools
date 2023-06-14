@@ -48,7 +48,7 @@ func CompactCodes(minimumRangeLength int, codeStrings ...string) (result string,
 	}
 
 	if hasCodeRanges {
-		err = fmt.Errorf("Input contains code range element ('..')")
+		err = fmt.Errorf("input contains code range element ('..')")
 		return
 	}
 	input.Sort()
@@ -120,22 +120,22 @@ func IncrementString(input string) string {
 	runes := slices.StringSlice(strings.Split(input, "")).Reverse()
 	increment := true
 	failed := false
-	for index, rune := range runes {
+	for index, r := range runes {
 		if failed || !increment {
 			continue
 		}
 
 		switch {
-		case rune == "9":
+		case r == "9":
 			runes[index] = "0"
-		case rune == "Z":
+		case r == "Z":
 			runes[index] = "A"
-		case rune >= "0" && rune < "9":
+		case r >= "0" && r < "9":
 			fallthrough
-		case rune >= "A" && rune <= "Y":
+		case r >= "A" && r <= "Y":
 
 			increment = false
-			v := rune[0]
+			v := r[0]
 			v += 1
 			runes[index] = string(v)
 		default:
@@ -167,7 +167,7 @@ func TryParseCodeList(codeList string) (*CodeList, error) {
 	individualCodes := make(map[string]bool)
 	codeRanges := make([]codeRange, 0, 5)
 
-	splitter := regexp.MustCompile("[A-Za-z0-9\\.]+")
+	splitter := regexp.MustCompile("[A-Za-z0-9.]+")
 
 	for _, code := range splitter.FindAllString(codeList, -1) {
 		rangeBounds := strings.Split(code, "..")
@@ -207,8 +207,8 @@ func (cc *CodeList) Includes(code string) bool {
 	if present {
 		return true
 	} else {
-		for _, codeRange := range cc.codeRanges {
-			if codeRange.contains(code, cc.strictMatch) {
+		for _, rng := range cc.codeRanges {
+			if rng.contains(code, cc.strictMatch) {
 				return true
 			}
 		}

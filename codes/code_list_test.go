@@ -85,7 +85,7 @@ var _ = Describe("CodeList", func() {
 		})
 
 		It("parse complex codeset", func() {
-			c := ParseCodeList("code12..code20 , ,  code3,code99,V90..V99")
+			c := ParseCodeList("code12..code20 , ,  code3,code99,V90..V99,X90..X99")
 			Expect(c.Includes("code12")).To(BeTrue())
 			Expect(c.Includes("code125")).To(BeTrue())
 			Expect(c.Includes("code17")).To(BeTrue())
@@ -95,6 +95,9 @@ var _ = Describe("CodeList", func() {
 			Expect(c.Includes("V90")).To(BeTrue())
 			Expect(c.Includes("V95")).To(BeTrue())
 			Expect(c.Includes("V99")).To(BeTrue())
+			Expect(c.Includes("X90")).To(BeTrue())
+			Expect(c.Includes("X95")).To(BeTrue())
+			Expect(c.Includes("X99")).To(BeTrue())
 		})
 
 		It("parses stupidly long codeset", func() {
