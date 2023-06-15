@@ -21,6 +21,7 @@ type CodeList struct {
 	codes       map[string]bool
 	codeRanges  []codeRange
 	strictMatch bool
+	except      *CodeList
 }
 
 func (cc *CodeList) String() string {
@@ -35,7 +36,12 @@ func (cc *CodeList) String() string {
 
 	sort.Strings(keys)
 
-	return strings.Join(keys, ",")
+	except := ""
+	if cc.except != nil {
+		except = fmt.Sprintf(" EXCEPT [%s]", cc.except.String())
+	}
+
+	return strings.Join(keys, ",") + except
 }
 
 func CompactCodes(minimumRangeLength int, codeStrings ...string) (result string, err error) {
@@ -201,7 +207,47 @@ func (cc *CodeList) WithStrictMatching() *CodeList {
 	return cc
 }
 
+func (cc *CodeList) Merge(other *CodeList) *CodeList {
+	individualCodes := make(map[string]bool, len(cc.codes)+len(other.codes))
+	codeRanges := make([]codeRange, 0, len(cc.codeRanges)+len(other.codeRanges))
+
+	for code, _ := range cc.codes {
+		individualCodes[code] = true
+	}
+	for code, _ := range other.codes {
+		individualCodes[code] = true
+	}
+
+	codeRanges = append(codeRanges, cc.codeRanges...)
+	codeRanges = append(codeRanges, other.codeRanges...)
+	return &CodeList{codes: individualCodes, codeRanges: codeRanges, strictMatch: cc.strictMatch || other.strictMatch}
+}
+
+func (cc *CodeList) Except(other *CodeList) *CodeList {
+	result := cc.copy()
+
+	result.except = other
+
+	return result
+}
+
+func (cc *CodeList) copy() *CodeList {
+	individualCodes := make(map[string]bool, len(cc.codes))
+	codeRanges := make([]codeRange, 0, len(cc.codeRanges))
+
+	for code, _ := range cc.codes {
+		individualCodes[code] = true
+	}
+	codeRanges = append(codeRanges, cc.codeRanges...)
+
+	return &CodeList{codes: individualCodes, codeRanges: codeRanges, strictMatch: cc.strictMatch}
+}
+
 func (cc *CodeList) Includes(code string) bool {
+	if cc.except != nil && cc.except.Includes(code) {
+		return false
+	}
+
 	code = strings.ToUpper(code)
 	_, present := cc.codes[code]
 	if present {

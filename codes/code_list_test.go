@@ -141,6 +141,7 @@ D172 D197 D198 D225..D230 D232..D235 D237..D247 D249..D253 D259 D650..D653 D656 
 			Expect(c.Includes("C0104")).To(BeTrue())
 			Expect(c.Includes("D0104")).To(BeTrue())
 		})
+
 	})
 
 	Context("Other Matching", func() {
@@ -223,6 +224,39 @@ A004`)
 		It("Dumps keys with single code", func() {
 			c := ParseCodeList("A1")
 			Expect(c.String()).To(Equal("A1"))
+		})
+	})
+
+	Context("Merge and Except", func() {
+		Context("Merge", func() {
+			c1 := ParseCodeList("A001, A002,A003..A010,  A100  ")
+			c2 := ParseCodeList("A1")
+			cm := c1.Merge(c2)
+
+			It("Produces a correct string", func() {
+				Expect(cm.String()).To(Equal("A001,A002,A003..A010,A1,A100"))
+			})
+
+			It("Correctly Matches", func() {
+				Expect(cm.Includes("A004")).To(BeTrue())
+				Expect(cm.Includes("A1")).To(BeTrue())
+			})
+		})
+		Context("Except", func() {
+			c1 := ParseCodeList("A001, A002,A003..A010,  A100  ")
+			c2 := ParseCodeList("A005..A006")
+			ce := c1.Except(c2)
+
+			It("Produces a correct string", func() {
+				Expect(ce.String()).To(Equal("A001,A002,A003..A010,A100 EXCEPT [A005..A006]"))
+			})
+
+			It("Correctly Matches", func() {
+				Expect(ce.Includes("A004")).To(BeTrue())
+				Expect(ce.Includes("A005")).To(BeFalse())
+				Expect(ce.Includes("A006")).To(BeFalse())
+				Expect(ce.Includes("A007")).To(BeTrue())
+			})
 		})
 	})
 })
