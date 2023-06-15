@@ -23,8 +23,8 @@ func CountNonEmpty(choices ...string) int {
 	return result
 }
 
-func CenterString(str string, width int) string {
+func CenterString(str, pad string, width int) string {
 	spaces := int(float32(width-len(str)) / 2)
 	remainder := width - (spaces + len(str))
-	return strings.Repeat(" ", spaces) + str + strings.Repeat(" ", remainder)
+	return strings.Repeat(pad, spaces) + str + strings.Repeat(pad, remainder)
 }

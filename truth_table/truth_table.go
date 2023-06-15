@@ -8,8 +8,9 @@ import (
 )
 
 type TruthTable struct {
-	fields []string
-	lines  []*truthTableLine
+	fields  []string
+	lines   []*truthTableLine
+	Verbose bool
 }
 
 type keyMatch string
@@ -38,7 +39,7 @@ func (tt *TruthTable) Line(result interface{}, fieldValues ...interface{}) *Trut
 	return tt
 }
 
-func (tt *TruthTable) Result(fieldValues ...interface{}) (found bool, result interface{}) {
+func (tt *TruthTable) Result(fieldValues ...interface{}) (found bool, result interface{}, details string) {
 	values := tt.convertFieldValues(fieldValues)
 	if len(values) != len(tt.fields) {
 		panic(fmt.Errorf("count of field values (%d) does not match decared field count (%d)", len(values), len(tt.fields)))
@@ -47,6 +48,9 @@ func (tt *TruthTable) Result(fieldValues ...interface{}) (found bool, result int
 	for _, line := range tt.lines {
 		found, result = line.match(values)
 		if found {
+			if tt.Verbose {
+				details = tt.toString(values, line)
+			}
 			break
 		}
 	}
@@ -54,6 +58,10 @@ func (tt *TruthTable) Result(fieldValues ...interface{}) (found bool, result int
 }
 
 func (tt *TruthTable) String() string {
+	return tt.toString([]keyMatch{}, nil)
+}
+
+func (tt *TruthTable) toString(input []keyMatch, matchedLine *truthTableLine) string {
 	sb := ks.NewStringBuilder()
 
 	sb.Print("|")
@@ -61,7 +69,7 @@ func (tt *TruthTable) String() string {
 	for _, f := range tt.fields {
 		width := fixgo.Ternary(len(f) > len(Yes), len(f), len(Yes)) + 2
 		widths = append(widths, width)
-		sb.Print(ks.CenterString(f, width))
+		sb.Print(ks.CenterString(f, " ", width))
 		sb.Print("|")
 	}
 
@@ -73,7 +81,7 @@ func (tt *TruthTable) String() string {
 
 	resultWidth += 2
 	widths = append(widths, resultWidth)
-	sb.Print(ks.CenterString("Result", resultWidth))
+	sb.Print(ks.CenterString("Result", " ", resultWidth))
 	sb.Print("|")
 	lineWidth := len(sb.String())
 
@@ -84,6 +92,14 @@ func (tt *TruthTable) String() string {
 	}
 
 	sb.Println(strings.Repeat("-", lineWidth))
+
+	if matchedLine != nil {
+		sb.Println(ks.CenterString(" Input ", "=", lineWidth))
+		matchedLine.addStringEx(sb, input, "", widths)
+		sb.Println(ks.CenterString(" Matches ", "=", lineWidth))
+		matchedLine.addString(sb, widths)
+		sb.Println(strings.Repeat("=", lineWidth))
+	}
 
 	return sb.String()
 }
@@ -123,15 +139,19 @@ func (l *truthTableLine) match(fieldValues []keyMatch) (found bool, result inter
 	return
 }
 
-func (l *truthTableLine) addString(sb *ks.StringBuilder, widths []int) {
+func (l *truthTableLine) addStringEx(sb *ks.StringBuilder, fieldValues []keyMatch, resultString string, widths []int) {
 	sb.Print("|")
 
-	for idx, f := range l.values {
+	for idx, f := range fieldValues {
 		width := widths[idx]
-		sb.Print(ks.CenterString(string(f), width))
+		sb.Print(ks.CenterString(string(f), " ", width))
 		sb.Print("|")
 	}
-	sb.Print(ks.CenterString(fmt.Sprint(l.result), widths[len(widths)-1]))
+	sb.Print(ks.CenterString(fmt.Sprint(resultString), " ", widths[len(widths)-1]))
 	sb.Print("|")
 	sb.Println("")
+}
+
+func (l *truthTableLine) addString(sb *ks.StringBuilder, widths []int) {
+	l.addStringEx(sb, l.values, fmt.Sprint(l.result), widths)
 }
