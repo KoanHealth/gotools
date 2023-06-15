@@ -1,5 +1,7 @@
 package strings
 
+import "strings"
+
 // Returns the first non-empty string
 func FirstNonEmpty(choices ...string) string {
 	for _, choice := range choices {
@@ -19,4 +21,10 @@ func CountNonEmpty(choices ...string) int {
 		}
 	}
 	return result
+}
+
+func CenterString(str string, width int) string {
+	spaces := int(float32(width-len(str)) / 2)
+	remainder := width - (spaces + len(str))
+	return strings.Repeat(" ", spaces) + str + strings.Repeat(" ", remainder)
 }
