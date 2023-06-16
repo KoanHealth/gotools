@@ -226,7 +226,11 @@ func (cc *CodeList) Merge(other *CodeList) *CodeList {
 func (cc *CodeList) Except(other *CodeList) *CodeList {
 	result := cc.copy()
 
-	result.except = other
+	if cc.except != nil {
+		result.except = cc.except.Merge(other)
+	} else {
+		result.except = other
+	}
 
 	return result
 }

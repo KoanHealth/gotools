@@ -256,6 +256,17 @@ A004`)
 				Expect(ce.Includes("A005")).To(BeFalse())
 				Expect(ce.Includes("A006")).To(BeFalse())
 				Expect(ce.Includes("A007")).To(BeTrue())
+				Expect(ce.Includes("A008")).To(BeTrue())
+			})
+
+			It("Allows multiple excepts", func() {
+				ce = ce.Except(ParseCodeList(`A007`))
+
+				Expect(ce.Includes("A004")).To(BeTrue())
+				Expect(ce.Includes("A005")).To(BeFalse())
+				Expect(ce.Includes("A006")).To(BeFalse())
+				Expect(ce.Includes("A007")).To(BeFalse())
+				Expect(ce.Includes("A008")).To(BeTrue())
 			})
 		})
 	})
