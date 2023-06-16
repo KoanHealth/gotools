@@ -10,7 +10,7 @@ var _ = Describe("Truth Table", func() {
 	Context("Empty Table", func() {
 		truthTable := Create("ECMO", "Trach", "MV96", "PDX", "MajOR")
 		It("Doesn't find anything", func() {
-			found, result, _ := truthTable.Result(true, false, true, false, true)
+			found, result := truthTable.Result(true, false, true, false, true)
 			Expect(found).To(BeFalse())
 			Expect(result).To(BeNil())
 		})
@@ -25,19 +25,19 @@ var _ = Describe("Truth Table", func() {
 			Line("D004", false, true, nil, true, false)
 
 		It("Returns the expected result with boolean arguments", func() {
-			found, result, _ := truthTable.Result(true, false, true, false, true)
+			found, result := truthTable.Result(true, false, true, false, true)
 			Expect(found).To(BeTrue())
 			Expect(result).To(Equal("D003"))
 		})
 
 		It("Returns the expected result with table arguments", func() {
-			found, result, _ := truthTable.Result(Yes, No, Yes, No, Yes)
+			found, result := truthTable.Result(Yes, No, Yes, No, Yes)
 			Expect(found).To(BeTrue())
 			Expect(result).To(Equal("D003"))
 		})
 
 		It("Returns the expected result with different arguments", func() {
-			found, result, _ := truthTable.Result(false, true, true, false, false)
+			found, result := truthTable.Result(false, true, true, false, false)
 			Expect(found).To(BeTrue())
 			Expect(result).To(Equal("D004"))
 		})
@@ -50,8 +50,7 @@ var _ = Describe("Truth Table", func() {
 
 		It("Display Match String", func() {
 			fmt.Println()
-			truthTable.Verbose = true
-			_, _, details := truthTable.Result(true, false, true, false, true)
+			_, _, details := truthTable.ResultVerbose(true, false, true, false, true)
 			fmt.Println(details)
 		})
 	})

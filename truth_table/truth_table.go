@@ -8,9 +8,8 @@ import (
 )
 
 type TruthTable struct {
-	fields  []string
-	lines   []*truthTableLine
-	Verbose bool
+	fields []string
+	lines  []*truthTableLine
 }
 
 type keyMatch string
@@ -39,7 +38,17 @@ func (tt *TruthTable) Line(result interface{}, fieldValues ...interface{}) *Trut
 	return tt
 }
 
-func (tt *TruthTable) Result(fieldValues ...interface{}) (found bool, result interface{}, details string) {
+func (tt *TruthTable) Result(fieldValues ...interface{}) (found bool, result interface{}) {
+	found, result, _ = tt.resultEx(false, fieldValues...)
+	return
+}
+
+func (tt *TruthTable) ResultVerbose(fieldValues ...interface{}) (found bool, result interface{}, details string) {
+	found, result, details = tt.resultEx(true, fieldValues...)
+	return
+}
+
+func (tt *TruthTable) resultEx(verbose bool, fieldValues ...interface{}) (found bool, result interface{}, details string) {
 	values := tt.convertFieldValues(fieldValues)
 	if len(values) != len(tt.fields) {
 		panic(fmt.Errorf("count of field values (%d) does not match decared field count (%d)", len(values), len(tt.fields)))
@@ -48,7 +57,7 @@ func (tt *TruthTable) Result(fieldValues ...interface{}) (found bool, result int
 	for _, line := range tt.lines {
 		found, result = line.match(values)
 		if found {
-			if tt.Verbose {
+			if verbose {
 				details = tt.toString(values, line)
 			}
 			break
