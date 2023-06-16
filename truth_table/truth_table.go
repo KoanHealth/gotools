@@ -63,6 +63,9 @@ func (tt *TruthTable) resultEx(verbose bool, fieldValues ...interface{}) (found 
 			break
 		}
 	}
+	if !found && verbose {
+		details = tt.toString(values, nil)
+	}
 	return
 }
 
@@ -102,11 +105,16 @@ func (tt *TruthTable) toString(input []keyMatch, matchedLine *truthTableLine) st
 
 	sb.Println(strings.Repeat("-", lineWidth))
 
-	if matchedLine != nil {
+	if len(input) > 0 {
 		sb.Println(ks.CenterString(" Input ", "=", lineWidth))
 		matchedLine.addStringEx(sb, input, "", widths)
-		sb.Println(ks.CenterString(" Matches ", "=", lineWidth))
-		matchedLine.addString(sb, widths)
+		if matchedLine != nil {
+			sb.Println(ks.CenterString(" Matches ", "=", lineWidth))
+			matchedLine.addString(sb, widths)
+		} else {
+
+			sb.Println(ks.CenterString("    No Match Found    ", "*", lineWidth))
+		}
 		sb.Println(strings.Repeat("=", lineWidth))
 	}
 

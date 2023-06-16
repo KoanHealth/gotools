@@ -53,6 +53,12 @@ var _ = Describe("Truth Table", func() {
 			_, _, details := truthTable.ResultVerbose(true, false, true, false, true)
 			fmt.Println(details)
 		})
+
+		It("Display Unmatched String", func() {
+			fmt.Println()
+			_, _, details := truthTable.ResultVerbose(false, false, true, false, true)
+			fmt.Println(details)
+		})
 	})
 
 })
