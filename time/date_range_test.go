@@ -26,6 +26,12 @@ var _ = Describe("DateRange", func() {
 			Expect(dr.Max).To(Equal(tomorrow))
 		})
 
+		It("Initializes with a year", func() {
+			dr := NewYearDateRange(2023)
+			Expect(dr.Min).To(Equal(Date(2023, 1, 1)))
+			Expect(dr.Max).To(Equal(Date(2023, 12, 31)))
+		})
+
 		It("Initializes with any value zero gives empty range", func() {
 			zero := time.Time{}
 			Expect(NewUnaryDateRange(zero).IsEmpty()).To(BeTrue())

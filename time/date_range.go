@@ -18,6 +18,10 @@ func NewUnaryDateRange(start time.Time) DateRange {
 	return NewDateRange(start, start)
 }
 
+func NewYearDateRange(year int) DateRange {
+	return NewDateRange(Date(year, 1, 1), Date(year, 12, 31))
+}
+
 func NewDateRange(start, end time.Time) DateRange {
 	if start.IsZero() || end.IsZero() {
 		return NewEmptyDateRange()
