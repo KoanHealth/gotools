@@ -19,9 +19,9 @@ var _ = Describe("Month Number", func() {
 	})
 
 	It("Formats as string", func() {
-		Expect(MonthNumber(202302).String()).To(Equal("[FEB2023]"))
-		Expect(MonthNumber(202306).String()).To(Equal("[JUN2023]"))
-		Expect(MonthNumber(202312).String()).To(Equal("[DEC2023]"))
+		Expect(MonthNumber(202302).String()).To(Equal("[Feb 2023]"))
+		Expect(MonthNumber(202306).String()).To(Equal("[Jun 2023]"))
+		Expect(MonthNumber(202312).String()).To(Equal("[Dec 2023]"))
 	})
 
 	Context("Validations", func() {
