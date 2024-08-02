@@ -23,5 +23,5 @@ version:
 	git push origin master --tag
 
 ci:
-	docker-compose -f .github/compose/docker-compose.yml build
-	docker-compose -f .github/compose/docker-compose.yml run test
+	docker compose -f .github/compose/docker-compose.yml build
+	docker compose -f .github/compose/docker-compose.yml run test
